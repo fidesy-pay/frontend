@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500;700;800&display=swap');
+
+body {
+  margin: 0;
+  background-color: rgb(244, 244, 244);
+  font-family: 'Montserrat', sans-serif;
+}
+
+#result, #smart-wallets {
+  font-family: 'Open Sans', sans-serif;
+}
