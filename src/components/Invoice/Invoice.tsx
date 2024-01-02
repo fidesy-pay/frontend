@@ -2,13 +2,15 @@
 import React, {useState} from 'react';
 import { useParams } from 'react-router-dom';
 import {gql, useMutation, useQuery} from '@apollo/client';
+import { formatDate } from '../../utils/format_date';
 
 const INVOICES_QUERY = gql`
     query Invoices($filter: InvoicesFilter!) {
         invoices(filter: $filter) {
             items {
                 id
-                amount
+                usd_amount
+                token_amount
                 address
                 status
                 chain
@@ -25,7 +27,8 @@ const UPDATE_INVOICE_MUTATION = gql`
             updateInvoice(input: $input) {
                 invoice {
                     address
-                    amount
+                    usd_amount
+                    token_amount
                     chain
                     created_at
                     id
@@ -51,14 +54,6 @@ const Invoice: React.FC = () => {
 
     const [updateInvoice] = useMutation(UPDATE_INVOICE_MUTATION);
 
-    const formatInvoiceDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return new Intl.DateTimeFormat('en-US', {
-            timeStyle: 'short',
-            dateStyle: 'medium',
-        }).format(date);
-    };
-
     const handlePayment = async () => {
         try {
             // Send request to update the invoice
@@ -67,9 +62,8 @@ const Invoice: React.FC = () => {
                     input: {
                         id: invoice_id,
                         // FIXME data.invoices.items[0].amount
-                        amount: 0.001,
                         chain: 'polygon',
-                        token: 'matic',
+                        token: 'matic-network',
                     },
                 },
             });
@@ -96,13 +90,13 @@ const Invoice: React.FC = () => {
     return (
         <div className="bg-gray-100 p-8 rounded-lg shadow-md">
             <h1 className="text-2xl font-semibold mb-4">Invoice Details</h1>
-            <div className="bg-white p-4 rounded-md mb-4">
-                <div className="text-sm text-gray-700">Invoice ID: {invoice.id}</div>
-                <div className="text-sm text-gray-700">Address {invoice.address}</div>
-                <div className="text-sm text-gray-500">Amount: {invoice.amount} {invoice.token}</div>
+            <div key={invoice.id} className="bg-white p-4 rounded-md mb-4">
+                <div className="text-sm text-gray-700">{invoice.id}</div>
+                <div className="text-sm text-gray-700">{invoice.address}</div>
+                <div className="text-sm text-gray-500">{invoice.usd_amount} USD / {invoice.token_amount} {invoice.token}</div>
                 <div className="text-sm text-gray-500">Status: {invoice.status}</div>
                 <div className="text-sm text-gray-500">Chain: {invoice.chain}</div>
-                <div className="text-sm text-gray-500">Created At: {formatInvoiceDate(invoice.created_at)}</div>
+                <div className="text-sm text-gray-500">Created At: {formatDate(invoice.created_at)}</div>
             </div>
 
             <div className="mt-4">

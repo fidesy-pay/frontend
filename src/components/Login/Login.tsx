@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {gql, useMutation} from "@apollo/client";
-
-const LOGIN = gql`
-    mutation Login($input: LoginInput!) {
-        login(input: $input) {
-            token
-        }
-    }
-`;
+import { LoginMutation } from "../../graphql/mutation/login"
 
 export default function Login() {
     const [username, setUsername] = useState("");
@@ -16,7 +9,7 @@ export default function Login() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const [loginMutation] = useMutation(LOGIN);
+    const [loginMutation] = useMutation(LoginMutation);
 
     const login = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -32,20 +25,11 @@ export default function Login() {
             });
             if (response.data.login.token != null) {
                 localStorage.setItem("token", response.data.login.token)
+                localStorage.setItem("client_id", response.data.login.clientId)
                 navigate("/profile");
                 return
             }
 
-            // if (resp.ok) {
-            //     // Successful login
-            //     // You can redirect the user to another page or perform any desired actions here
-            //     console.log("Login successful");
-            //     localStorage.setItem("authorization", res.token)
-            //     navigate("/s");
-            // } else {
-            //     // Failed login
-            //     setError("Login failed. Please check your username and password.");
-            // }
         } catch (error) {
             console.error("Error during login:", error);
             setError("An error occurred during login. Please try again later.");

@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {gql, useMutation} from "@apollo/client";
-
-const LOGIN = gql`
-    mutation SignUp($input: SignUpInput!) {
-        signUp(input: $input) {
-            token
-        }
-    }
-`;
+import { SignUpMutation } from "../../graphql/mutation/signup"
 
 export default function SignUp() {
     const [username, setUsername] = useState("");
@@ -16,13 +9,13 @@ export default function SignUp() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const [loginMutation] = useMutation(LOGIN);
+    const [signUpMutation] = useMutation(SignUpMutation);
 
     const login = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         try {
-            const response = await loginMutation({
+            const response = await signUpMutation({
                 variables: {
                     input: {
                         "username": username,
@@ -30,8 +23,9 @@ export default function SignUp() {
                     },
                 },
             });
-            if (response.data.login.token != null) {
-                localStorage.setItem("token", response.data.login.token)
+            if (response.data.signUp.token != null) {
+                localStorage.setItem("token", response.data.signUp.token)
+                localStorage.setItem("client_id", response.data.signUp.clientId)
                 navigate("/profile");
                 return
             }

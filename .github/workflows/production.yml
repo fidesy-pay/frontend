@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - '*'
+      - 'master'
 
 jobs:
   prepare:
@@ -29,7 +29,7 @@ jobs:
 
       - name: Generate random number
         run: |
-          PORT=$((RANDOM % (65000 - 5000 + 1) + 5000))
+          PORT=4000
           
           echo "PORT=$PORT" >> vars.env
           echo "PROJECT_NAME=${{ github.event.repository.name }}" >> vars.env
@@ -62,23 +62,6 @@ jobs:
           source vars.env
           
           docker run --name $APP_NAME -d \
-            --network fidesyx \
+            --network zoo \
             -e PORT=$PORT -p $PORT:$PORT \
              $APP_NAME
-          
-          # Update DNS settings
-          curl --request POST \
-               --url https://api.cloudflare.com/client/v4/zones/${{ secrets.CF_ZONE_ID }}/dns_records \
-               --header "Content-Type: application/json" \
-               --header "X-Auth-Email: ${{ secrets.CF_X_AUTH_EMAIL }}" \
-               --header "X-Auth-Key: ${{ secrets.CF_X_AUTH_KEY }}" \
-                --data "{\"content\": \"${{ vars.SERVER_HOST }}\",\"name\":\"${APP_NAME}\",\"proxied\": false,\"type\": \"A\",\"comment\": \"Domain verification record\",\"tags\": [],\"ttl\": 3600}"
-          
-          # Update NGINX config
-          export PORT=$PORT
-          export SERVER_HOST=${{ vars.SERVER_HOST }}
-          export APP_NAME=$APP_NAME
-          bash ./update_nginx.sh
-
-          echo ""
-          echo "http://"$APP_NAME".fidesy.xyz/"

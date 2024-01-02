@@ -1,8 +1,9 @@
-import {ApolloClient, InMemoryCache, createHttpLink, ApolloLink, concat} from '@apollo/client';
+import { ApolloClient, InMemoryCache, createHttpLink, ApolloLink, concat } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
 
 // Create an HTTP link to your GraphQL server
 const httpLink = createHttpLink({
-    uri: 'http://localhost:7090/query', // Replace with your GraphQL server's URL
+    uri: 'http://77.91.123.23:7090/query', // Replace with your GraphQL server's URL
 });
 
 // Create an in-memory cache
@@ -19,9 +20,19 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     return forward(operation);
 });
 
+const errorLink = onError(({ networkError }) => {
+    if (networkError && networkError.message.includes("401")) {
+        // Redirect to the /login page when unauthorized
+        window.location.href = '/login';
+    } else {
+        // Handle other error cases if needed
+        console.error('Network error:', networkError);
+    }
+});
+
 // Create the Apollo Client instance
 const client = new ApolloClient({
-    link: concat(authMiddleware, httpLink),
+    link: concat(authMiddleware, concat(errorLink, httpLink)),
     cache,
 });
 
