@@ -61,7 +61,6 @@ const Invoice: React.FC = () => {
                 variables: {
                     input: {
                         id: invoice_id,
-                        // FIXME data.invoices.items[0].amount
                         chain: 'polygon',
                         token: 'matic-network',
                     },
@@ -108,12 +107,14 @@ const Invoice: React.FC = () => {
             </div>
 
             <div className="mt-4">
-                <button
-                    onClick={handlePayment}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-                >
-                    Pay with {selectedPaymentOption}
-                </button>
+                {invoice.status.toString() !== "SUCCESS" &&
+                    <button
+                        onClick={handlePayment}
+                        className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                    >
+                        Pay with {selectedPaymentOption}
+                    </button>
+                }
             </div>
         </div>
     );

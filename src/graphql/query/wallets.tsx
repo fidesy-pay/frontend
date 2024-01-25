@@ -6,7 +6,6 @@ export const WalletsQuery = gql`
         wallets(filter: $filter) {
             items {
                 address
-                balance
             }
         }
     }

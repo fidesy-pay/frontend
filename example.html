@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Marketplace</title>
+</head>
+<body>
+
+<h1>Product Details</h1>
+<p>Product Name: Example Product</p>
+<p>Price: $0.0005</p>
+
+<button onclick="buyProduct()">Buy Now</button>
+
+<script>
+    function buyProduct() {
+        // Call the API to create an invoice
+        fetch('http://localhost:7090/api/invoice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'api-key': 'ce67675afb529eb0f7c279c541102f40'
+            },
+            body: JSON.stringify({
+                usd_amount: 0.0005
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Save the invoice_id to localStorage
+                localStorage.setItem('invoice_id', data.invoice_id);
+                console.log('Invoice created. ID:', data.invoice_id);
+                alert('Invoice created. ID: ' + data.invoice_id);
+            })
+            .catch(error => {
+                console.error('Error creating invoice:', error);
+                alert('Error creating invoice. Please try again.');
+            });
+    }
+
+    // Check invoice status on page load
+    window.onload = function() {
+        const invoiceId = localStorage.getItem('invoice_id');
+
+        if (invoiceId) {
+            fetch(`http://localhost:7090/api/invoice/${invoiceId}`, {
+                headers: {
+                    'api-key': 'ce67675afb529eb0f7c279c541102f40'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const status = data[0].status;
+
+                    if (status === 1) {
+                        console.log('Payment pending.');
+                    } else if (status === 4) {
+                        console.log('Payment completed.');
+                        alert('Payment completed! Thank you for your purchase.');
+                        // Clear the invoice_id from localStorage after successful payment
+                        localStorage.removeItem('invoice_id');
+                    } else {
+                        console.log('Payment status unknown.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching invoice status:', error);
+                    alert('Error fetching invoice status.');
+                });
+        }
+    };
+</script>
+
+</body>
+</html>

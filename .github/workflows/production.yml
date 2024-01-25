@@ -17,11 +17,11 @@ jobs:
           BRANCH_NAME="${GITHUB_REF#refs/heads/}"
           REPO_NAME=${{ github.event.repository.name }}
           
-          # Check if the branch name is "main"
-          if [ $BRANCH_NAME = "main" ]; then
+          # Check if the branch name is "master"
+          if [ $BRANCH_NAME = "master" ]; then
             APP_NAME=$REPO_NAME
           else
-            APP_NAME=$BRANCH_NAME
+            APP_NAME="${REPO_NAME}_${BRANCH_NAME}"
           fi
           
           echo "APP_NAME=$APP_NAME" >> vars.env

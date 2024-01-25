@@ -14,17 +14,6 @@ export function Wallets() {
         },
     });
 
-    // if (loading) {
-    //     return (
-    //         <div>
-    //             <div className="skeleton" style={{ height: '50px', width: '100%', marginBottom: '10px' }}></div>
-    //
-    //             <p className="text-center mt-4">Loading...</p>
-    //
-    //             <div className="skeleton" style={{ height: '50px', width: '100%', marginBottom: '10px' }}></div>
-    //         </div>
-    //     );
-    // }
     if (loading) return <div></div>
 
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
