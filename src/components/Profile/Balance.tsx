@@ -1,11 +1,13 @@
 import { useQuery } from "@apollo/client";
 import {BalancesQuery} from "../../graphql/query/balances";
 
-export function Balance(input: { address: string }) {
+export function Balance(input: { address: string, chain: string, token: string }) {
     const { loading, error, data } = useQuery(BalancesQuery, {
         variables: {
             filter: {
-                addressIn: [input.address],
+                addressEq: input.address,
+                chainEq: input.chain,
+                tokenEq: input.token,
             },
         },
     });
@@ -16,5 +18,5 @@ export function Balance(input: { address: string }) {
 
     if (error) return <p className="text-sm">Error getting balance :(</p>;
 
-    return <div className="text-sm text-gray-500">{data.balances && data.balances.balances[0]} MATIC</div>
+    return <div className="text-sm text-gray-500">{data.balance && data.balance.balance} MATIC</div>
 }

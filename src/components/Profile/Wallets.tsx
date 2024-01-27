@@ -21,10 +21,14 @@ export function Wallets() {
     return (
         <div className="mt-8">
             <h2 className="text-lg font-semibold mb-4">Wallets</h2>
-            {data.wallets.items && data.wallets.items.map((wallet: { address: string; balance: number }) => (
+            {data.wallets.items && data.wallets.items.map((wallet: { address: string; balance: number; chain: string }) => (
                 <div key={wallet.address} className="bg-white p-4 rounded-md mb-4">
                     <div className="text-sm text-gray-700">{wallet.address}</div>
-                    <Balance address={wallet.address}/>
+                    <Balance
+                        address={wallet.address}
+                        chain={wallet.chain}
+                        token={"matic-network"}
+                    />
                 </div>
             ))}
         </div>
