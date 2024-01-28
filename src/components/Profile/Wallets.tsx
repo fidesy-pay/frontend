@@ -4,14 +4,8 @@ import { Balance } from "./Balance";
 
 
 export function Wallets() {
-    let clientID = localStorage.getItem("client_id")
-
     const { loading, error, data } = useQuery(WalletsQuery, {
-        variables: {
-            filter: {
-                clientIdIn: [clientID],
-            },
-        },
+        variables: {},
     });
 
     if (loading) return <div></div>

@@ -4,19 +4,11 @@ import {InvoicesQuery} from "../../graphql/query/invoices";
 
 
 export function Invoices() {
-
-    let clientID = localStorage.getItem("client_id")
-
     const { loading, error, data } = useQuery(InvoicesQuery, {
-        variables: {
-            filter: {
-                clientIdIn: [clientID],
-            },
-        },
+        variables: {},
     });
 
-    if (loading) return <div></div>
-    // if (loading) return <p className="text-center mt-4">Loading...</p>;
+    if (loading) return <p className="text-center mt-4">Loading...</p>;
 
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
 

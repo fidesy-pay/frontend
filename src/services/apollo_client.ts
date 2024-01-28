@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error';
 
 // Create an HTTP link to your GraphQL server
 const httpLink = createHttpLink({
-    uri: 'http://77.91.123.23:7090/query', // Replace with your GraphQL server's URL
+    uri: `http://77.91.123.23:7090/query`,
 });
 
 // Create an in-memory cache

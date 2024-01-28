@@ -25,7 +25,6 @@ export default function SignUp() {
             });
             if (response.data.signUp.token != null) {
                 localStorage.setItem("token", response.data.signUp.token)
-                localStorage.setItem("client_id", response.data.signUp.clientId)
                 navigate("/profile");
                 return
             }

@@ -25,7 +25,6 @@ export default function Login() {
             });
             if (response.data.login.token != null) {
                 localStorage.setItem("token", response.data.login.token)
-                localStorage.setItem("client_id", response.data.login.clientId)
                 navigate("/profile");
                 return
             }
