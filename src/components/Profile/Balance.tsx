@@ -18,5 +18,5 @@ export function Balance(input: { address: string, chain: string, token: string }
 
     if (error) return <p className="text-sm">Error getting balance :(</p>;
 
-    return <div className="text-sm text-gray-500">{data.balance && data.balance.balance} MATIC</div>
+    return <div className="text-sm text-gray-500">{data.balance && data.balance.balance.toFixed(6)} MATIC</div>
 }

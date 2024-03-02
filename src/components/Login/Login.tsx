@@ -38,9 +38,10 @@ export default function Login() {
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <form
-                className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-1/2 lg:w-1/3"
+                className="bg-gradient-to-r from-blue-200 to-purple-200 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-1/2 lg:w-1/3"
                 onSubmit={(event) => login(event)}
             >
+                <h1 className="text-xl font-semibold mb-6 text-center">Login</h1>
                 <div className="mb-4">
                     <label
                         className="block text-gray-700 text-sm font-bold mb-2"
@@ -49,7 +50,7 @@ export default function Login() {
                         Username
                     </label>
                     <input
-                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gradient-to-r from-blue-100 to-purple-100"
                         id="username"
                         type="text"
                         value={username}
@@ -64,7 +65,7 @@ export default function Login() {
                         Password
                     </label>
                     <input
-                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gradient-to-r from-blue-100 to-purple-100"
                         id="password"
                         type="password"
                         value={password}
@@ -74,9 +75,9 @@ export default function Login() {
                 {error && (
                     <div className="mb-4 text-red-500 text-sm">{error}</div>
                 )}
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-center">
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline bg-gradient-to-r from-purple-300 to-blue-300"
                         type="submit"
                     >
                         Log In
@@ -84,5 +85,6 @@ export default function Login() {
                 </div>
             </form>
         </div>
+
     );
 }
