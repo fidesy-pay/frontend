@@ -44,22 +44,23 @@ const Invoice: React.FC = () => {
 
     const [updateInvoice] = useMutation(UPDATE_INVOICE_MUTATION);
 
-    useEffect(() => {
-        const fetchInvoice = async () => {
-            try {
-                const response = await fetch(`http://77.91.123.23:7090/api/invoice/${invoice_id}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch invoice');
-                }
-                const invoiceResp: Invoice= await response.json();
-                setInvoice(invoiceResp);
-                setLoading(false);
-            } catch (error: any) {
-                setError(error);
-                setLoading(false);
+    const fetchInvoice = async () => {
+        try {
+            const response = await fetch(`http://77.91.123.23:7090/api/invoice/${invoice_id}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch invoice');
             }
-        };
+            const invoiceResp: Invoice= await response.json();
+            setInvoice(invoiceResp);
+            setLoading(false);
+        } catch (error: any) {
+            setError(error);
+            setLoading(false);
+        }
+    };
 
+
+    useEffect(() => {
         fetchInvoice();
     }, [invoice_id]);
 
@@ -77,6 +78,7 @@ const Invoice: React.FC = () => {
             });
             // Handle success or navigate to success page
             console.log('Invoice updated successfully!');
+            fetchInvoice()
         } catch (error) {
             // Handle error
             console.error('Error updating invoice:', error);
@@ -109,7 +111,7 @@ const Invoice: React.FC = () => {
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Amount:</span>
-                                <span className="text-sm text-gray-700">{invoice.usd_amount.toFixed(6)} USD / {invoice.token_amount.toFixed(6)} {invoice.token}</span>
+                                <span className="text-sm text-gray-700">{invoice.usd_amount.toFixed(6)} USD / {invoice.token_amount != undefined && invoice.token_amount.toFixed(6)} {invoice.token}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Status:</span>
