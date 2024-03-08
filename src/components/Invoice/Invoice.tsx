@@ -1,26 +1,21 @@
 // InvoiceDetails.tsx
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import {gql, useMutation, useQuery} from '@apollo/client';
-import { formatDate } from '../../utils/format_date';
+import {formatDate} from '../../utils/format_date';
 import {polygonMaticLogoUrl} from "../../constants/constants";
 
-const INVOICES_QUERY = gql`
-    query Invoices($filter: InvoicesFilter!) {
-        invoices(filter: $filter) {
-            items {
-                id
-                usd_amount
-                token_amount
-                address
-                status
-                chain
-                token
-                created_at
-            }
-        }
-    }
-`;
+type Invoice = {
+    id: string;
+    client_id: string;
+    usd_amount: number;
+    token_amount: number;
+    chain: string;
+    token: string;
+    status: number;
+    address: string;
+    created_at: string;
+};
 
 const UPDATE_INVOICE_MUTATION = gql`
     mutation UpdateInvoice($input: UpdateInvoiceInput!) {
@@ -42,18 +37,31 @@ const UPDATE_INVOICE_MUTATION = gql`
 `
 const Invoice: React.FC = () => {
     const { invoice_id } = useParams<{ invoice_id: string }>();
-
-    const { loading, error, data } = useQuery(INVOICES_QUERY, {
-        variables: {
-            filter: {
-                idIn: [invoice_id],
-            },
-        },
-    });
-
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [invoice, setInvoice] = useState<Invoice | null>(null);
     const [selectedPaymentOption, setSelectedPaymentOption] = useState('Polygon Matic');
 
     const [updateInvoice] = useMutation(UPDATE_INVOICE_MUTATION);
+
+    useEffect(() => {
+        const fetchInvoice = async () => {
+            try {
+                const response = await fetch(`http://77.91.123.23:7090/api/invoice/${invoice_id}`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch invoice');
+                }
+                const invoiceResp: Invoice= await response.json();
+                setInvoice(invoiceResp);
+                setLoading(false);
+            } catch (error: any) {
+                setError(error);
+                setLoading(false);
+            }
+        };
+
+        fetchInvoice();
+    }, [invoice_id]);
 
     const handlePayment = async () => {
         try {
@@ -77,8 +85,6 @@ const Invoice: React.FC = () => {
 
     if (loading) return <p className="text-center mt-4">Loading...</p>;
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
-
-    const invoice = data.invoices.items[0];
 
     if (!invoice) {
         return <p className="text-center mt-4">Invoice not found</p>;
