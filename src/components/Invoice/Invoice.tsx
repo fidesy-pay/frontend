@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import {gql, useMutation, useQuery} from '@apollo/client';
 import {formatDate} from '../../utils/format_date';
-import {polygonMaticLogoUrl} from "../../constants/constants";
+import {arbitrumLogoUrl, polygonMaticLogoUrl} from "../../constants/constants";
 
 type Invoice = {
     id: string;
@@ -35,12 +35,22 @@ const UPDATE_INVOICE_MUTATION = gql`
         }
     }
 `
+
+type PaymentOption = {
+    name: string
+    chain: string
+    token: string
+}
+
+const PolygonMatic: PaymentOption = {name: "Polygon Matic", chain: "polygon", token: "matic-network"};
+const ArbitrumEthereum: PaymentOption = {name: "Arbitrum Ethereum", chain: "arbitrum", token: "ethereum"};
+
 const Invoice: React.FC = () => {
     const { invoice_id } = useParams<{ invoice_id: string }>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [invoice, setInvoice] = useState<Invoice | null>(null);
-    const [selectedPaymentOption, setSelectedPaymentOption] = useState('Polygon Matic');
+    const [selectedPaymentOption, setSelectedPaymentOption] = useState<PaymentOption | null>(PolygonMatic);
 
     const [updateInvoice] = useMutation(UPDATE_INVOICE_MUTATION);
 
@@ -71,8 +81,8 @@ const Invoice: React.FC = () => {
                 variables: {
                     input: {
                         id: invoice_id,
-                        chain: 'polygon',
-                        token: 'matic-network',
+                        chain: selectedPaymentOption?.chain,
+                        token: selectedPaymentOption?.token,
                     },
                 },
             });
@@ -111,7 +121,7 @@ const Invoice: React.FC = () => {
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Amount:</span>
-                                <span className="text-sm text-gray-700">{invoice.usd_amount.toFixed(6)} USD / {invoice.token_amount != undefined && invoice.token_amount.toFixed(6)} {invoice.token}</span>
+                                <span className="text-sm text-gray-700">{invoice.usd_amount.toFixed(9)} USD / {invoice.token_amount != undefined && invoice.token_amount.toFixed(9)} {invoice.token}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Status:</span>
@@ -134,9 +144,17 @@ const Invoice: React.FC = () => {
                         Payment Options
                     </div>
                     <div className="px-4 py-2">
-                        <div className="flex items-center justify-center space-x-2 text-gray-700">
+                        <div className="flex items-center justify-center space-x-2 text-gray-700"
+                            onClick={() => setSelectedPaymentOption(PolygonMatic)}>
                             <img src={polygonMaticLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
-                            <span className="text-sm">Pay with {selectedPaymentOption}</span>
+                            <span className="text-sm">Pay with Polygon Matic</span>
+                        </div>
+                    </div>
+                    <div className="px-4 py-2">
+                        <div className="flex items-center justify-center space-x-2 text-gray-700"
+                             onClick={() => setSelectedPaymentOption(ArbitrumEthereum)}>
+                            <img src={arbitrumLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
+                            <span className="text-sm">Pay with Arbitrum Ethereum</span>
                         </div>
                     </div>
                 </div>
@@ -147,7 +165,7 @@ const Invoice: React.FC = () => {
                             onClick={handlePayment}
                             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                         >
-                            Pay with {selectedPaymentOption}
+                            Pay with {selectedPaymentOption?.name}
                         </button>
                     }
                 </div>
