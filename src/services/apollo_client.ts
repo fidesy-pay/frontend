@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error';
 
 // Create an HTTP link to your GraphQL server
 const httpLink = createHttpLink({
-    uri: `http://77.91.123.23:7090/query`,
+    uri: `http://facade.pay.fidesy.tech/query`,
 });
 
 // Create an in-memory cache

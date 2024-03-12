@@ -56,7 +56,7 @@ const Invoice: React.FC = () => {
 
     const fetchInvoice = async () => {
         try {
-            const response = await fetch(`http://77.91.123.23:7090/api/invoice/${invoice_id}`);
+            const response = await fetch(`http://facade.pay.fidesy.tech/api/invoice/${invoice_id}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch invoice');
             }
