@@ -23,8 +23,8 @@ export function Invoices() {
                     <div className="px-4 py-2">
                         <div className="text-sm text-gray-700 mb-2">{invoice.address}</div>
                         <div className="flex justify-between text-sm text-gray-500 mb-2">
-                            <span>{invoice.usd_amount.toFixed(9)} USD</span>
-                            <span>{invoice.token_amount.toFixed(9)} {invoice.token}</span>
+                            <span>{invoice.usd_amount.toFixed(2)} USD</span>
+                            <span>{invoice.token_amount.toFixed(18)} {invoice.token}</span>
                         </div>
                         <div className="text-sm text-gray-500 mb-2">Status: {invoice.status}</div>
                         <div className="text-sm text-gray-500 mb-2">Chain: {invoice.chain}</div>

@@ -121,7 +121,7 @@ const Invoice: React.FC = () => {
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Amount:</span>
-                                <span className="text-sm text-gray-700">{invoice.usd_amount.toFixed(9)} USD / {invoice.token_amount != undefined && invoice.token_amount.toFixed(9)} {invoice.token}</span>
+                                <span className="text-sm text-gray-700">{invoice.usd_amount.toFixed(2)} USD / {invoice.token_amount != undefined && invoice.token_amount.toFixed(18)} {invoice.token}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Status:</span>
