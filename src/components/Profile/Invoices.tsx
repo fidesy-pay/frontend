@@ -13,7 +13,7 @@ export function Invoices() {
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
 
     return (
-        <div className="mt-8 flex flex-col">
+        <div className="mt-8 w-full  max-w-md">
             <h2 className="text-lg font-semibold mb-4">Invoices</h2>
             {data.invoices.items && data.invoices.items.map((invoice: { id: string; address: string; token_amount: number; usd_amount: number; status: string; chain: string; created_at: string, token: string }) => (
                 <div key={invoice.id} className="bg-gradient-to-r from-blue-200 to-purple-200 border border-gray-300 rounded-lg overflow-hidden shadow-lg w-full max-w-md mb-4">

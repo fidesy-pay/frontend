@@ -4,34 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Marketplace</title>
+    <!-- Add Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-gray-100">
 
-<h1>Product Details</h1>
-<p>Product Name: Example Product</p>
-<p>Price: $0.0005</p>
+<div class="container mx-auto px-4 py-8">
 
-<button onclick="buyProduct()">Buy Now</button>
+    <h1 class="text-3xl font-bold mb-4">Product Details</h1>
+    <div class="mb-4">
+        <img src="https://via.placeholder.com/400x300" alt="Product Image" class="rounded-lg shadow-md">
+    </div>
+    <p class="text-lg">Product Name: Example Product</p>
+    <p class="text-lg">Price: $0.5</p>
+
+    <button onclick="buyProduct()" id="buyButton" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Buy Now</button>
+    <p id="paymentStatus" class="hidden mt-4 text-lg font-bold text-green-600">Payment Confirmed!</p>
+
+</div>
 
 <script>
     function buyProduct() {
         // Call the API to create an invoice
-        fetch('http://localhost:7090/api/invoice', {
+        fetch('http://facade.pay.fidesy.tech/api/invoice', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'api-key': 'ce67675afb529eb0f7c279c541102f40'
+                'api-key': '45e6ca57d5188b7e181df8b36d7e367a'
             },
             body: JSON.stringify({
-                usd_amount: 0.0005
+                usd_amount: 0.1
             })
         })
             .then(response => response.json())
             .then(data => {
                 // Save the invoice_id to localStorage
                 localStorage.setItem('invoice_id', data.invoice_id);
-                console.log('Invoice created. ID:', data.invoice_id);
-                alert('Invoice created. ID: ' + data.invoice_id);
+                // Redirect to invoice page
+                window.location.href = `http://pay.fidesy.tech/invoices/${data.invoice_id}`;
             })
             .catch(error => {
                 console.error('Error creating invoice:', error);
@@ -44,32 +54,40 @@
         const invoiceId = localStorage.getItem('invoice_id');
 
         if (invoiceId) {
-            fetch(`http://localhost:7090/api/invoice/${invoiceId}`, {
-                headers: {
-                    'api-key': 'ce67675afb529eb0f7c279c541102f40'
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    const status = data[0].status;
-
-                    if (status === 1) {
-                        console.log('Payment pending.');
-                    } else if (status === 4) {
-                        console.log('Payment completed.');
-                        alert('Payment completed! Thank you for your purchase.');
-                        // Clear the invoice_id from localStorage after successful payment
-                        localStorage.removeItem('invoice_id');
-                    } else {
-                        console.log('Payment status unknown.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching invoice status:', error);
-                    alert('Error fetching invoice status.');
-                });
+            checkInvoiceStatus(invoiceId);
         }
     };
+
+    function checkInvoiceStatus(invoiceId) {
+        fetch(`http://facade.pay.fidesy.tech/api/invoice/${invoiceId}`, {
+            headers: {
+                'api-key': '45e6ca57d5188b7e181df8b36d7e367a'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                const status = data.status;
+
+                if (status === "PENDING") {
+                    console.log('Payment pending.');
+                    // Check status again after 5 seconds
+                    setTimeout(() => {
+                        checkInvoiceStatus(invoiceId);
+                    }, 5000);
+                } else if (status === "SUCCESS") {
+                    console.log('Payment completed.');
+                    document.getElementById('paymentStatus').classList.remove('hidden');
+                    // Clear the invoice_id from localStorage after successful payment
+                    localStorage.removeItem('invoice_id');
+                } else {
+                    console.log('Payment status unknown.');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching invoice status:', error);
+                alert('Error fetching invoice status.');
+            });
+    }
 </script>
 
 </body>

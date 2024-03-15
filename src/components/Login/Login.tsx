@@ -25,7 +25,7 @@ export default function Login() {
             });
             if (response.data.login.token != null) {
                 localStorage.setItem("token", response.data.login.token)
-                navigate("/profile");
+                navigate("/overview");
                 return
             }
 
@@ -36,9 +36,9 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="mt-20 w-full flex flex-col items-center">
             <form
-                className="bg-gradient-to-r from-blue-200 to-purple-200 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-1/2 lg:w-1/3"
+                className="shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-1/2 lg:w-1/3"
                 onSubmit={(event) => login(event)}
             >
                 <h1 className="text-xl font-semibold mb-6 text-center">Login</h1>
@@ -50,7 +50,7 @@ export default function Login() {
                         Username
                     </label>
                     <input
-                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gradient-to-r from-blue-100 to-purple-100"
+                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         id="username"
                         type="text"
                         value={username}
@@ -65,7 +65,7 @@ export default function Login() {
                         Password
                     </label>
                     <input
-                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gradient-to-r from-blue-100 to-purple-100"
+                        className="shadow appearance-none border rounded w-full py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
                         id="password"
                         type="password"
                         value={password}
@@ -77,7 +77,7 @@ export default function Login() {
                 )}
                 <div className="flex items-center justify-center">
                     <button
-                        className="text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline bg-gradient-to-r from-purple-300 to-blue-300"
+                        className="font-bold border py-2 px-4 rounded hover:bg-gray-200 focus:outline-none focus:shadow-outline "
                         type="submit"
                     >
                         Log In

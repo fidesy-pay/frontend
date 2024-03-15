@@ -4,37 +4,8 @@ import { useParams } from 'react-router-dom';
 import {gql, useMutation, useQuery} from '@apollo/client';
 import {formatDate} from '../../utils/format_date';
 import {arbitrumLogoUrl, polygonMaticLogoUrl} from "../../constants/constants";
-
-type Invoice = {
-    id: string;
-    client_id: string;
-    usd_amount: number;
-    token_amount: number;
-    chain: string;
-    token: string;
-    status: number;
-    address: string;
-    created_at: string;
-};
-
-const UPDATE_INVOICE_MUTATION = gql`
-    mutation UpdateInvoice($input: UpdateInvoiceInput!) {
-        invoiceMutations {
-            updateInvoice(input: $input) {
-                invoice {
-                    address
-                    usd_amount
-                    token_amount
-                    chain
-                    created_at
-                    id
-                    status
-                    token
-                }
-            }
-        }
-    }
-`
+import { InvoiceModel } from "../../types/invoice";
+import {UpdateInvoiceMutation} from "../../graphql/mutation/update_invoice";
 
 type PaymentOption = {
     name: string
@@ -45,14 +16,14 @@ type PaymentOption = {
 const PolygonMatic: PaymentOption = {name: "Polygon Matic", chain: "polygon", token: "matic-network"};
 const ArbitrumEthereum: PaymentOption = {name: "Arbitrum Ethereum", chain: "arbitrum", token: "ethereum"};
 
-const Invoice: React.FC = () => {
+export const Invoice: React.FC = () => {
     const { invoice_id } = useParams<{ invoice_id: string }>();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [invoice, setInvoice] = useState<Invoice | null>(null);
+    const [invoice, setInvoice] = useState<InvoiceModel | null>(null);
     const [selectedPaymentOption, setSelectedPaymentOption] = useState<PaymentOption | null>(PolygonMatic);
 
-    const [updateInvoice] = useMutation(UPDATE_INVOICE_MUTATION);
+    const [updateInvoice] = useMutation(UpdateInvoiceMutation);
 
     const fetchInvoice = async () => {
         try {
@@ -60,7 +31,7 @@ const Invoice: React.FC = () => {
             if (!response.ok) {
                 throw new Error('Failed to fetch invoice');
             }
-            const invoiceResp: Invoice= await response.json();
+            const invoiceResp: InvoiceModel = await response.json();
             setInvoice(invoiceResp);
             setLoading(false);
         } catch (error: any) {
@@ -95,33 +66,30 @@ const Invoice: React.FC = () => {
         }
     };
 
-    if (loading) return <p className="text-center mt-4">Loading...</p>;
+    if (loading) return <p className="text-center mt-4"></p>;
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
 
     if (!invoice) {
         return <p className="text-center mt-4">Invoice not found</p>;
     }
     return (
-        <div className="bg-gray-100 min-h-screen flex justify-center items-center">
-            <div className="p-8 rounded-lg max-w-xl">
+        <div className="mt-10 flex ">
+            <div className="p-8 rounded-lg">
                 <h1 className="text-2xl font-semibold mb-6 text-center">Invoice Details</h1>
-                <div key={invoice.id} className="mb-6 bg-gradient-to-r from-blue-200 to-purple-200 border border-gray-300 rounded-lg overflow-hidden shadow-lg">
-                    <div className="bg-gradient-to-r from-blue-400 to-purple-400 text-white font-semibold text-sm px-4 py-2">
-                        Invoice Information
-                    </div>
+                <div key={invoice.id} className="mb-6 rounded-lg overflow-hidden shadow-lg">
                     <div className="px-4 py-2">
-                        <div className="flex flex-col space-y-2">
+                        <div className="flex flex-col space-y-3">
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
-                                <span className="text-sm font-medium text-gray-600">Invoice ID:</span>
-                                <span className="text-sm text-gray-700">{invoice.id}</span>
+                                <span className="text-sm font-medium text-gray-600 mr-5">ID:</span>
+                                <span className="text-sm text-gray-700 break-all">{invoice.id}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
-                                <span className="text-sm font-medium text-gray-600">Address:</span>
+                                <span className="text-sm font-medium text-gray-600 mr-5">Address:</span>
                                 <span className="text-sm text-gray-700 break-all">{invoice.address}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Amount:</span>
-                                <span className="text-sm text-gray-700">{invoice.usd_amount.toFixed(2)} USD / {invoice.token_amount != undefined && invoice.token_amount.toFixed(18)} {invoice.token}</span>
+                                <span className="text-sm text-gray-700">${invoice.usd_amount.toFixed(2)} <br/> {invoice.token_amount != undefined && invoice.token_amount.toFixed(18)} {invoice.token}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600">Status:</span>
@@ -139,22 +107,22 @@ const Invoice: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mt-6 text-center bg-gradient-to-r from-blue-200 to-purple-200 border border-gray-300 rounded-lg overflow-hidden shadow-lg">
-                    <div className="bg-gradient-to-r from-blue-400 to-purple-400 text-white font-semibold text-sm px-4 py-2">
+                <div className="mt-6 rounded-lg">
+                    <div className="font-semibold text-sm px-4 py-2">
                         Payment Options
                     </div>
                     <div className="px-4 py-2">
-                        <div className="flex items-center justify-center space-x-2 text-gray-700"
+                        <div className="flex items-center space-x-2 text-gray-700"
                             onClick={() => setSelectedPaymentOption(PolygonMatic)}>
                             <img src={polygonMaticLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
-                            <span className="text-sm">Pay with Polygon Matic</span>
+                            <span className="text-sm">Polygon Matic</span>
                         </div>
                     </div>
                     <div className="px-4 py-2">
-                        <div className="flex items-center justify-center space-x-2 text-gray-700"
+                        <div className="flex items-center space-x-2 text-gray-700"
                              onClick={() => setSelectedPaymentOption(ArbitrumEthereum)}>
                             <img src={arbitrumLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
-                            <span className="text-sm">Pay with Arbitrum Ethereum</span>
+                            <span className="text-sm">Arbitrum Ethereum</span>
                         </div>
                     </div>
                 </div>
@@ -163,7 +131,7 @@ const Invoice: React.FC = () => {
                     {invoice.status.toString() !== "SUCCESS" &&
                         <button
                             onClick={handlePayment}
-                            className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                            className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-600"
                         >
                             Pay with {selectedPaymentOption?.name}
                         </button>
