@@ -51,7 +51,7 @@ function Wallet(input: {wallet: Wallet}) {
                         <Balance
                             address={input.wallet.address}
                             chain={"polygon"}
-                            token={"matic"}
+                            token={"matic-network"}
                         />
                     </div>
                 </div>

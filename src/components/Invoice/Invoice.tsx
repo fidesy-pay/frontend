@@ -107,36 +107,38 @@ export const Invoice: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mt-6 rounded-lg">
-                    <div className="font-semibold text-sm px-4 py-2">
-                        Payment Options
-                    </div>
-                    <div className="px-4 py-2">
-                        <div className="flex items-center space-x-2 text-gray-700"
-                            onClick={() => setSelectedPaymentOption(PolygonMatic)}>
-                            <img src={polygonMaticLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
-                            <span className="text-sm">Polygon Matic</span>
+                {invoice.status.toString() !== "SUCCESS" &&
+                    <div>
+                        <div className="mt-6 rounded-lg">
+                            <div className="font-semibold text-sm px-4 py-2">
+                                Payment Options
+                            </div>
                         </div>
-                    </div>
-                    <div className="px-4 py-2">
-                        <div className="flex items-center space-x-2 text-gray-700"
-                             onClick={() => setSelectedPaymentOption(ArbitrumEthereum)}>
-                            <img src={arbitrumLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
-                            <span className="text-sm">Arbitrum Ethereum</span>
+                        <div className="px-4 py-2">
+                            <div className="flex items-center space-x-2 text-gray-700"
+                                 onClick={() => setSelectedPaymentOption(PolygonMatic)}>
+                                <img src={polygonMaticLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
+                                <span className="text-sm">Polygon Matic</span>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                        <div className="px-4 py-2">
+                            <div className="flex items-center space-x-2 text-gray-700"
+                                 onClick={() => setSelectedPaymentOption(ArbitrumEthereum)}>
+                                <img src={arbitrumLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
+                                <span className="text-sm">Arbitrum Ethereum</span>
+                            </div>
+                        </div>
 
-                <div className="mt-6 flex justify-center">
-                    {invoice.status.toString() !== "SUCCESS" &&
-                        <button
-                            onClick={handlePayment}
-                            className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-                        >
-                            Pay with {selectedPaymentOption?.name}
-                        </button>
-                    }
-                </div>
+                        <div className="mt-6 flex justify-center">
+                            <button
+                                onClick={handlePayment}
+                                className="bg-gray-400 text-white px-4 py-2 rounded-md hover:bg-gray-600"
+                            >
+                                Pay with {selectedPaymentOption?.name}
+                            </button>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
 

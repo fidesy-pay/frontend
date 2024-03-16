@@ -3,10 +3,17 @@ import {formatDateV2} from "../../utils/format_date";
 import {useQuery} from "@apollo/client";
 import {InvoicesQuery} from "../../graphql/query/invoices";
 import { InvoiceModel } from "../../types/invoice";
+import {useState} from "react";
 
 export default function LastInvoices() {
+    const [invoiceStatuses, setInvoiceStatuses] = useState<string[]>(["SUCCESS"]);
+
     const { loading, error, data } = useQuery(InvoicesQuery, {
-        variables: {},
+        variables: {
+            filter: {
+                statusIn: invoiceStatuses
+            }
+        },
     });
 
 
@@ -16,7 +23,19 @@ export default function LastInvoices() {
 
     return (
         <div className="mt-12 px-6 py-9 w-full max-w-md bg-white rounded rounded-3xl">
-            <h1 className="text-lg mb-4 font-semibold">Last transactions</h1>
+            <div className="flex justify-between items-center">
+                <h1 className={"text-lg mb-4 font-semibold p-4 rounded-2xl cursor-pointer " + (invoiceStatuses.includes("SUCCESS") ? "bg-base" : "")}
+                    onClick={() => setInvoiceStatuses(["SUCCESS"])}
+                    >
+                    Last transactions
+                </h1>
+
+                <h1 className={"text-lg mb-4 font-semibold p-4 rounded-2xl cursor-pointer " + (invoiceStatuses.includes("NEW") || invoiceStatuses.includes("PENDING")   ? "bg-base" : "")}
+                    onClick={() => setInvoiceStatuses(["NEW", "PENDING"])}
+                    >
+                    New invoices
+                </h1>
+            </div>
             <div className="">
                 {data.invoices.items && data.invoices.items.map((invoice: InvoiceModel) => {
                     return <Invoice invoice={invoice}/>
@@ -37,7 +56,7 @@ function Invoice(input:{invoice: InvoiceModel}) {
                 <p className="text-gray-600 text-xs mb-2">{formatDateV2(input.invoice.created_at)}</p>
             </div>
             <div className="">
-                <p className="font-bold text-xl ">+${input.invoice.usd_amount}</p>
+                <p className="font-bold text-xl ">{input.invoice.status === "SUCCESS" ? "+" : ""}${input.invoice.usd_amount}</p>
             </div>
         </a>
 )

@@ -3,7 +3,7 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "http://localhost:7090/query",
+  schema: "http://facade.pay.fidesy.tech/query",
   documents: "src/**/*.tsx",
   generates: {
     "src/gql/": {

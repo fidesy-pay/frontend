@@ -9,7 +9,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        'fuck': 'rgb(200, 200, 200)'
+        'base': 'rgb(245, 243, 250)'
       }
     }
   },
