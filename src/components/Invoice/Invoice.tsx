@@ -13,6 +13,12 @@ type PaymentOption = {
     token: string
 }
 
+const paymentNotAvailableStatuses = [
+    "SUCCESS",
+    "FAILED",
+    "MANUAL_CONTROL"
+]
+
 const PolygonMatic: PaymentOption = {name: "Polygon Matic", chain: "polygon", token: "matic-network"};
 const ArbitrumEthereum: PaymentOption = {name: "Arbitrum Ethereum", chain: "arbitrum", token: "ethereum"};
 
@@ -66,25 +72,25 @@ export const Invoice: React.FC = () => {
         }
     };
 
-    if (loading) return <p className="text-center mt-4"></p>;
+    if (loading) return <p></p>;
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
 
     if (!invoice) {
         return <p className="text-center mt-4">Invoice not found</p>;
     }
     return (
-        <div className="mt-10 flex ">
-            <div className="p-8 rounded-lg">
+        <div className="mt-10 w-full flex justify-center">
+            <div className=" rounded-lg">
                 <h1 className="text-2xl font-semibold mb-6 text-center">Invoice Details</h1>
-                <div key={invoice.id} className="mb-6 rounded-lg overflow-hidden shadow-lg">
-                    <div className="px-4 py-2">
+                <div key={invoice.id} className="mb-6 rounded-lg shadow-lg">
+                    <div className="p-4">
                         <div className="flex flex-col space-y-3">
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
                                 <span className="text-sm font-medium text-gray-600 mr-5">ID:</span>
                                 <span className="text-sm text-gray-700 break-all">{invoice.id}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
-                                <span className="text-sm font-medium text-gray-600 mr-5">Address:</span>
+                                <span className="text-sm font-medium text-gray-600 mr-3">Address:</span>
                                 <span className="text-sm text-gray-700 break-all">{invoice.address}</span>
                             </div>
                             <div className="flex items-center justify-between border-b border-gray-300 py-2">
@@ -107,7 +113,7 @@ export const Invoice: React.FC = () => {
                     </div>
                 </div>
 
-                {invoice.status.toString() !== "SUCCESS" &&
+                {!paymentNotAvailableStatuses.includes(invoice.status.toString()) &&
                     <div>
                         <div className="mt-6 rounded-lg">
                             <div className="font-semibold text-sm px-4 py-2">

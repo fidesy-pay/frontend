@@ -7,7 +7,7 @@ import user_photo from "../../assets/user.png";
 
 export default function Overview() {
     return (
-        <div className="w-full flex flex-col items-center">
+        <div className="p-6 w-full flex flex-col items-center">
             <MainBalance/>
             <Actions/>
             <Wallets/>

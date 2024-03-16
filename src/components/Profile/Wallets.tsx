@@ -19,8 +19,8 @@ export function Wallets() {
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
 
     return (
-        <div className="mt-12 max-w-md w-full bg-white py-9 px-6 rounded-3xl">
-            <h2 className="text-lg font-semibold mb-4">Balances</h2>
+        <div className="mt-6 md:mt-12 max-w-md w-full bg-white py-9 px-6 rounded-3xl">
+            <h2 className="md:text-lg font-semibold mb-4">Balances</h2>
             {data.wallets.items && data.wallets.items.slice(0, 1).map((wallet: Wallet) => (
                 <Wallet wallet={wallet}/>
             ))}
@@ -34,14 +34,14 @@ function Wallet(input: {wallet: Wallet}) {
             <div className="font-semibold text-sm px-4 py-2">
                 {/*{input.wallet.address}*/}
             </div>
-            <div className="px-4 py-2">
+            <div className="md:px-4 md:py-2">
                 <div className="flex items-center text-gray-700">
                     <div>
-                        <span> <img src={polygonMaticLogoUrl} alt="Polygon Matic Logo" className="h-12 w-12"/></span>
+                        <span> <img src={polygonMaticLogoUrl} alt="Polygon Matic Logo" className="h-9 w-9 md:h-12 md:w-12"/></span>
                     </div>
                     <div className="flex-grow mx-3">
                         <div>
-                            <span className="font-semibold text-xl">Matic</span>
+                            <span className="font-semibold md:text-xl">Matic</span>
                         </div>
                         <div>
                             <span className="text-sm text-gray">polygon</span>
@@ -57,11 +57,11 @@ function Wallet(input: {wallet: Wallet}) {
                 </div>
                 <div className="mt-5 flex items-center text-gray-700">
                     <div>
-                        <span> <img src={ethereumLogoUrl} alt="Polygon Matic Logo" className="h-12 w-12"/></span>
+                        <span> <img src={ethereumLogoUrl} alt="Polygon Matic Logo" className="h-9 w-9 md:h-12 md:w-12"/></span>
                     </div>
                     <div className="flex-grow mx-3">
                         <div>
-                            <span className="font-semibold text-xl">Ethereum</span>
+                            <span className="font-semibold md:text-xl">Ethereum</span>
                         </div>
                         <div>
                             <span className="text-sm text-gray">arbitrum</span>

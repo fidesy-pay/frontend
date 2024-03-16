@@ -1,4 +1,4 @@
-import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, RouterProvider, ScrollRestoration} from "react-router-dom";
 import {ApolloProvider} from "@apollo/client";
 import client from "../../services/apollo_client";
 import Login from "../Login/Login";
@@ -39,7 +39,7 @@ export default function App() {
         <main>
 
             <ApolloProvider client={client}>
-                <div className="p-8 rounded-lg flex flex-col items-center">
+                <div className="md:p-8 rounded-lg flex flex-col items-center">
                     <Header/>
                     <RouterProvider router={router}/>
                 </div>

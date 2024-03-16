@@ -19,7 +19,7 @@ export default function Profile() {
     if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>
 
     return (
-        <div className="mt-8 w-full max-w-md">
+        <div className="p-6 mt-8 w-full max-w-md">
             <h1 className="text-lg mb-4 font-semibold">User information</h1>
                     <div className="flex flex-col space-y-5">
                         <div className="flex items-center space-x-4 text-gray-700">
