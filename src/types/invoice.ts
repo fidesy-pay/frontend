@@ -14,4 +14,5 @@ export type InvoiceModel = {
 
 export type Client = {
     username: string
+    photo_url: string
 }

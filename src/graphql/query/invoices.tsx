@@ -13,6 +13,7 @@ export const InvoicesQuery = gql`
                 created_at
                 payer {
                     username
+                    photo_url
                 }
             }
         }
