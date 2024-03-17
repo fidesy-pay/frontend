@@ -61,7 +61,7 @@ function Invoice({ invoice }: { invoice: InvoiceModel }) {
                 <img src={invoice.photo_url || user_photo} alt="User Photo" className="h-10 w-10 md:h-16 md:w-16 rounded-lg" />
             </div>
             <div className="flex-grow flex flex-col px-6 py-4">
-                <div className="font-bold md:text-lg">{invoice.name || 'Anonymous'}</div>
+                <div className="font-bold md:text-lg">{invoice.payer ? invoice.payer.username : 'Anonymous'}</div>
                 <p className="text-gray-600 text-xs">{formatDateV2(invoice.created_at)}</p>
             </div>
             <div>

@@ -11,6 +11,9 @@ export const InvoicesQuery = gql`
                 chain
                 token
                 created_at
+                payer {
+                    username
+                }
             }
         }
     }

@@ -7,7 +7,11 @@ export type InvoiceModel = {
     status: string
     chain: string
     token: string
-    name: string
     created_at: string
     photo_url: string
+    payer: Client
+}
+
+export type Client = {
+    username: string
 }
