@@ -16,7 +16,13 @@ export function Balance(input: { address: string, chain: string, token: string }
         return <div className="text-sm text-gray-500">Loading...</div>
     }
 
-    if (error) return <p className="text-sm">Error getting balance :(</p>;
+    if (error) {
+        if (error.networkError?.message.includes("401")) {
+            return <div></div>
+        }
+
+        return <p className="text-center text-red-500 mt-4">Error :(</p>
+    }
 
     return (
         <div className="flex flex-col items-center">

@@ -2,7 +2,6 @@ import {formatDate} from "../../utils/format_date";
 import {useQuery} from "@apollo/client";
 import {InvoicesQuery} from "../../graphql/query/invoices";
 
-
 export function Invoices() {
     const { loading, error, data } = useQuery(InvoicesQuery, {
         variables: {},
@@ -10,7 +9,13 @@ export function Invoices() {
 
     if (loading) return <p className="text-center mt-4">Loading...</p>;
 
-    if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
+    if (error) {
+        if (error.networkError?.message.includes("401")) {
+            return <div></div>
+        }
+
+        return <p className="text-center text-red-500 mt-4">Error :(</p>
+    }
 
     return (
         <div className="mt-8 w-full  max-w-md">

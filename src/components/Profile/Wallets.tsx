@@ -1,9 +1,8 @@
 import {useQuery} from "@apollo/client";
 import {WalletsQuery} from "../../graphql/query/wallets";
 import { Balance } from "./Balance";
-import {arbitrumLogoUrl, ethereumLogoUrl, polygonMaticLogoUrl} from "../../constants/constants";
+import {ethereumLogoUrl, polygonMaticLogoUrl} from "../../constants/constants";
 import React from "react";
-
 
 type Wallet = {
     address: string
@@ -16,7 +15,13 @@ export function Wallets() {
 
     if (loading) return <div></div>
 
-    if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
+    if (error) {
+        if (error.networkError?.message.includes("401")) {
+            return <div></div>
+        }
+
+        return <p className="text-center text-red-500 mt-4">Error :(</p>
+    }
 
     return (
         <div className="mt-6 md:mt-12 max-w-md w-full bg-white py-9 px-6 rounded-3xl">

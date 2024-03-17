@@ -16,7 +16,13 @@ export default function Profile() {
         return <div></div>
     }
 
-    if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>
+    if (error) {
+        if (error.networkError?.message.includes("401")) {
+            return <div></div>
+        }
+
+        return <p className="text-center text-red-500 mt-4">Error :(</p>
+    }
 
     return (
         <div className="p-6 mt-8 w-full max-w-md">

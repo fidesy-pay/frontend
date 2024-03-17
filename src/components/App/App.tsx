@@ -7,6 +7,7 @@ import Overview from "../Profile/Overview";
 import Invoice from "../Invoice/Invoice";
 import Profile from "../Profile/Profile";
 import Header from "../Header/Header";
+import Error from "../../Error/Error";
 
 
 
@@ -31,6 +32,9 @@ const router = createBrowserRouter([
         path: "/invoices/:invoice_id",
         element: <Invoice/>
     },
+    {
+        errorElement: <Error/>
+    }
 
 ])
 export default function App() {

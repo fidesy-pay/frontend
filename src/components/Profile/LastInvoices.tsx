@@ -18,7 +18,13 @@ export default function LastInvoices() {
 
     if (loading) return <p className="text-center mt-4"></p>;
 
-    if (error) return <p className="text-center text-red-500 mt-4">Error :(</p>;
+    if (error) {
+        if (error.networkError?.message.includes("401")) {
+            return <div></div>
+        }
+
+        return <p className="text-center text-red-500 mt-4">Error :(</p>
+    }
 
     return (
         <div className="mt-12 px-6 py-9 w-full max-w-md bg-white rounded rounded-3xl">
