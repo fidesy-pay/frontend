@@ -24,11 +24,13 @@ export function Wallets() {
     }
 
     return (
-        <div className="mt-6 md:mt-12 max-w-md w-full bg-white py-9 px-6 rounded-3xl">
-            <h2 className="md:text-lg font-semibold mb-4">Balances</h2>
-            {data.wallets.items && data.wallets.items.slice(0, 1).map((wallet: Wallet) => (
-                <Wallet wallet={wallet}/>
-            ))}
+        <div className="mt-6 md:mt-12 max-w-md w-full">
+            <h2 className="md:text-lg font-semibold mb-4 p-4">Balances</h2>
+            <div className="ring-2 ring-gray-100 custom-shadow py-9 px-6 rounded-3xl">
+                {data.wallets.items && data.wallets.items.slice(0, 1).map((wallet: Wallet) => (
+                    <Wallet wallet={wallet}/>
+                ))}
+            </div>
         </div>
     )
 }

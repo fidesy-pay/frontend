@@ -1,6 +1,6 @@
 import { Wallets } from "./Wallets";
 import {MainBalance} from "./MainBalance";
-import LastInvoices from "./LastInvoices";
+import Invoices from "./Invoices";
 import Actions from "./Actions";
 import user_photo from "../../assets/user.png";
 
@@ -11,7 +11,7 @@ export default function Overview() {
             <MainBalance/>
             <Actions/>
             <Wallets/>
-            <LastInvoices/>
+            <Invoices/>
         </div>
     )
 }

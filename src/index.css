@@ -7,7 +7,11 @@
 
 body {
   margin: 0;
-  background-color: rgb(245, 243, 250);
+  background-color: rgb(255, 255, 255);
   font-family: 'Montserrat', sans-serif;
   font-weight: 400;
+}
+
+.custom-shadow {
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.10);
 }

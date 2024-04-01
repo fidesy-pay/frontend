@@ -1,13 +1,29 @@
-import {formatDate} from "../../utils/format_date";
-import {useQuery} from "@apollo/client";
-import {InvoicesQuery} from "../../graphql/query/invoices";
+import React, {useEffect, useState} from 'react';
+import user_photo from '../../assets/user.png';
+import { formatDateV2 } from '../../utils/format_date';
+import { useQuery } from '@apollo/client';
+import { InvoicesQuery } from '../../graphql/query/invoices';
+import { InvoiceModel } from '../../types/invoice';
+import invoice from "../Invoice/Invoice";
 
-export function Invoices() {
+export default function Invoices() {
+    const [invoiceStatus, setInvoiceStatus] = useState<string>('SUCCESS');
+
+    const [invoices, setInvoices] = useState<InvoiceModel[]>([]);
+
     const { loading, error, data } = useQuery(InvoicesQuery, {
-        variables: {},
+        variables: {
+            filter: {},
+        },
     });
 
-    if (loading) return <p className="text-center mt-4">Loading...</p>;
+    useEffect(() => {
+        if (data && data.invoices.items) {
+            setInvoices(data.invoices.items);
+        }
+    }, [data]);
+
+    if (loading) return <p className="text-center mt-4"></p>;
 
     if (error) {
         if (error.networkError?.message.includes("401")) {
@@ -18,25 +34,50 @@ export function Invoices() {
     }
 
     return (
-        <div className="mt-8 w-full  max-w-md">
-            <h2 className="text-lg font-semibold mb-4">Invoices</h2>
-            {data.invoices.items && data.invoices.items.map((invoice: { id: string; address: string; token_amount: number; usd_amount: number; status: string; chain: string; created_at: string, token: string }) => (
-                <div key={invoice.id} className="bg-gradient-to-r from-blue-200 to-purple-200 border border-gray-300 rounded-lg overflow-hidden shadow-lg w-full max-w-md mb-4">
-                    <div className="bg-gradient-to-r from-blue-400 to-purple-400 text-white font-semibold text-sm px-4 py-2">
-                        {invoice.id}
-                    </div>
-                    <div className="px-4 py-2">
-                        <div className="text-sm text-gray-700 mb-2">{invoice.address}</div>
-                        <div className="flex justify-between text-sm text-gray-500 mb-2">
-                            <span>{invoice.usd_amount.toFixed(2)} USD</span>
-                            <span>{invoice.token_amount.toFixed(18)} {invoice.token}</span>
-                        </div>
-                        <div className="text-sm text-gray-500 mb-2">Status: {invoice.status}</div>
-                        <div className="text-sm text-gray-500 mb-2">Chain: {invoice.chain}</div>
-                        <div className="text-sm text-gray-500">Created At: {formatDate(invoice.created_at)}</div>
-                    </div>
-                </div>
-            ))}
+        <div className="mt-12 max-w-md w-full">
+            <div className="flex justify-between items-center space-x-3">
+                <h1 className='md:text-lg font-semibold mb-4'>
+                    Transactions
+                </h1>
+
+                <select
+                    className="text-sm md:text-lg mb-4 font-semibold p-4 rounded-2xl cursor-pointer ring-2 ring-gray-200"
+                    value={invoiceStatus}
+                    onChange={(e) => setInvoiceStatus(e.target.value)}>
+                    <option value="SUCCESS">Success</option>
+                    <option value="NEW">New</option>
+                    <option value="PENDING">Pending</option>
+                    <option value="FAILED">Failed</option>
+                    <option value="MANUAL_CONTROL">Manual Control</option>
+                </select>
+            </div>
+            <div className="mt-5 p-5 px-8 rounded-2xl ring-2 ring-gray-100 custom-shadow ">
+                {invoices &&
+                   invoices.map((invoice: InvoiceModel) => {
+                        if (invoice.status != invoiceStatus) {
+                            return
+                        }
+
+                        return <Invoice key={invoice.id} invoice={invoice} />;
+                    })}
+            </div>
         </div>
-    )
+    );
+}
+
+function Invoice({ invoice }: { invoice: InvoiceModel }) {
+    return (
+        <a className="md:mt-3 flex items-center cursor-pointer" href={"http://pay.fidesy.tech/invoices/"+invoice.id}>
+            <div>
+                <img src={invoice.payer && invoice.payer.photo_url !== "" ? invoice.payer.photo_url : user_photo} alt="User Photo" className="h-10 w-10 md:h-16 md:w-16 rounded-lg" />
+            </div>
+            <div className="flex-grow flex flex-col px-6 py-4">
+                <div className="font-bold md:text-lg">{invoice.payer ? invoice.payer.username : 'Anonymous'}</div>
+                <p className="text-gray-600 text-xs">{formatDateV2(invoice.created_at)}</p>
+            </div>
+            <div>
+                <p className="font-bold md:text-xl ">{invoice.status === 'SUCCESS' ? '+' : ''}${invoice.usd_amount}</p>
+            </div>
+        </a>
+    );
 }
