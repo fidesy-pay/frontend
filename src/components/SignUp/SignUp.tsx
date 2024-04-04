@@ -118,7 +118,7 @@ const RegistrationWorkflow = () => {
            setFlow(data.flows.items[0])
        }
 
-        if (flow?.state === "Completed") {
+        if (flow?.state === "COMPLETED") {
             navigate("/overview");
         }
     })
