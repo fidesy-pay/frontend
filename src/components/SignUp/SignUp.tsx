@@ -148,15 +148,17 @@ const RegistrationWorkflow = () => {
 
             {flow?.state === "WAITING_EMAIL" && (
                 <div className="mt-10 custom-shadow rounded-xl p-8 text-center">
+                    <label className="block text-gray-700 text-sm font-bold mb-2 text-start" htmlFor="email">
+                        Email
+                    </label>
                     <input
                         type="email"
-                        className="mb-4 appearance-none border rounded w-full py-3 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                        placeholder="Email"
+                        className="mb-4 appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <button
-                        className="font-bold border rounded p-2 px-5"
+                        className="bg-base font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleEmailSubmit}
                     >
                         Next
@@ -165,15 +167,18 @@ const RegistrationWorkflow = () => {
             )}
             {flow?.state === "WAITING_EMAIL_CONFIRMATION" && (
                 <div className="mt-10 custom-shadow rounded-2xl p-8 text-center">
+                    <label className="block text-gray-700 text-sm font-bold mb-2 text-start" htmlFor="code">
+                        Confirmation code
+                    </label>
                     <input
                         type="text"
+                        id="code"
                         className="mb-4 appearance-none border rounded w-full py-3 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                        placeholder="Confirmation Code"
                         value={code}
                         onChange={(e) => setCode(e.target.value)}
                     />
                     <button
-                        className="font-bold border rounded p-2 px-5"
+                        className="bg-base font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleCodeSubmit}
                     >
                         Next
@@ -182,22 +187,28 @@ const RegistrationWorkflow = () => {
             )}
             {flow?.state === "WAITING_CREDENTIALS" && (
                 <div className="mt-10 custom-shadow rounded-2xl p-8 text-center">
+                    <label className="block text-gray-700 text-sm font-bold mb-2 text-start" htmlFor="username">
+                        Username
+                    </label>
                     <input
                         type="text"
+                        id="username"
                         className="mb-4 appearance-none border rounded w-full py-3 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                        placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                     />
+                    <label className="block text-gray-700 text-sm font-bold mb-2 text-start" htmlFor="password">
+                        Password
+                    </label>
                     <input
                         type="password"
+                        id="password"
                         className="mb-4 appearance-none border rounded w-full py-3 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
-                        placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <button
-                        className="font-bold border rounded p-2 px-5"
+                        className="bg-base font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleCredentialsSubmit}
                     >
                         Sign Up

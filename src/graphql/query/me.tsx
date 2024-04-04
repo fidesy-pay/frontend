@@ -7,5 +7,6 @@ export const MeQuery = gql`
             username
             api_key
             created_at
+            photo_url
         }
     }`

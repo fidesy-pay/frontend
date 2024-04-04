@@ -1,6 +1,10 @@
 import user_photo from "../../assets/user.png";
+import {useQuery} from "@apollo/client";
+import {MeQuery} from "../../graphql/query/me";
+import {useNavigation} from "react-router-dom";
 
 export default function Header() {
+
     return (
             <div className="p-8 w-full max-w-md flex justify-between items-center">
                 <a href="http://pay.fidesy.tech/overview">

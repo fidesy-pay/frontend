@@ -11,6 +11,8 @@ type PaymentOption = {
     name: string
     chain: string
     token: string
+    symbol: string
+    image: string
 }
 
 const paymentNotAvailableStatuses = [
@@ -19,8 +21,8 @@ const paymentNotAvailableStatuses = [
     "MANUAL_CONTROL"
 ]
 
-const PolygonMatic: PaymentOption = {name: "Polygon Matic", chain: "polygon", token: "matic-network"};
-const ArbitrumEthereum: PaymentOption = {name: "Arbitrum Ethereum", chain: "arbitrum", token: "ethereum"};
+export const PolygonMatic: PaymentOption = {name: "Polygon Matic", chain: "polygon", token: "matic-network", symbol: "MATIC", image: polygonMaticLogoUrl};
+export const ArbitrumEthereum: PaymentOption = {name: "Arbitrum Ethereum", chain: "arbitrum", token: "ethereum", symbol: "ETH", image: arbitrumLogoUrl};
 
 export const Invoice: React.FC = () => {
     const { invoice_id } = useParams<{ invoice_id: string }>();
@@ -130,7 +132,7 @@ export const Invoice: React.FC = () => {
                         <div className="px-4 py-2">
                             <div className="flex items-center space-x-2 text-gray-700"
                                  onClick={() => setSelectedPaymentOption(ArbitrumEthereum)}>
-                                <img src={arbitrumLogoUrl} alt="Polygon Matic Logo" className="h-8 w-8" />
+                                <img src={arbitrumLogoUrl} alt="Arbitrum Logo" className="h-8 w-8" />
                                 <span className="text-sm">Arbitrum Ethereum</span>
                             </div>
                         </div>

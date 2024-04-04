@@ -8,6 +8,9 @@ import Invoice from "../Invoice/Invoice";
 import Profile from "../Profile/Profile";
 import Header from "../Header/Header";
 import Error from "../../Error/Error";
+import Transfer from "../Transfer/Transfer";
+import {useState} from "react";
+import user_photo from "../../assets/user.png";
 
 
 
@@ -34,17 +37,20 @@ const router = createBrowserRouter([
     },
     {
         errorElement: <Error/>
+    },
+    {
+        path: "/transfer",
+        element: <Transfer/>
     }
 
 ])
 export default function App() {
-
     return (
         <main>
 
             <ApolloProvider client={client}>
                 <div className="md:p-8 rounded-lg flex flex-col items-center">
-                    <Header/>
+                    <Header />
                     <RouterProvider router={router}/>
                 </div>
 
