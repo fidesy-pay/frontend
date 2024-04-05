@@ -141,7 +141,7 @@ const RegistrationWorkflow = () => {
     };
 
     return (
-        <div className="mt-6 md:mt-12 max-w-md w-full">
+        <div className="mt-6 md:mt-12 p-4  max-w-md w-full">
             <div className="text-center">
                 <span className="text-xl font-semibold">Registration</span>
             </div>

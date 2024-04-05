@@ -25,12 +25,17 @@ export default function Profile() {
     }
 
     return (
-        <div className="p-6 mt-8 w-full max-w-md">
+        <div className="p-6 mt-8 w-full max-w-md custom-shadow rounded-2xl">
             <h1 className="text-lg mb-4 font-semibold">User information</h1>
                     <div className="flex flex-col space-y-5">
                         <div className="flex items-center space-x-4 text-gray-700">
                             <span>Username</span>
                             <p className="font-semibold">{data.me.username}</p>
+                        </div>
+
+                        <div className="flex items-center space-x-4 text-gray-700">
+                            <span>Email</span>
+                            <p className="font-semibold">{data.me.email}</p>
                         </div>
 
                         <div className="flex items-center space-x-4 text-gray-700">

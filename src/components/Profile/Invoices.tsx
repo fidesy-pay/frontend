@@ -37,7 +37,7 @@ export default function Invoices() {
         <div className="mt-12 max-w-md w-full">
             <div className="flex justify-between items-center space-x-3">
                 <h1 className='md:text-lg font-semibold mb-4'>
-                    Transactions
+                    Invoices
                 </h1>
 
                 <select

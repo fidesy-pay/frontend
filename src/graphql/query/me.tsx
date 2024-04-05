@@ -8,5 +8,6 @@ export const MeQuery = gql`
             api_key
             created_at
             photo_url
+            email
         }
     }`
