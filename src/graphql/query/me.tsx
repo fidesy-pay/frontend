@@ -9,5 +9,6 @@ export const MeQuery = gql`
             created_at
             photo_url
             email
+            is_invoice_notification_enabled
         }
     }`
