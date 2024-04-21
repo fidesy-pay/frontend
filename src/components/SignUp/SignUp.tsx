@@ -1,13 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {useMutation, useQuery} from "@apollo/client";
-import {WalletsQuery} from "../../graphql/query/wallets";
-import {FlowsQuery} from "../../graphql/query/flows";
-import {LoginMutation} from "../../graphql/mutation/login";
-import {CreateRegistrationMutation} from "../../graphql/mutation/create_registration";
-import {SetEmailMutation} from "../../graphql/mutation/set_email";
-import {ConfirmEmailMutation} from "../../graphql/mutation/confirm_email";
-import {SetCredentialsMutation} from "../../graphql/mutation/set_registration_credentials";
-import {useNavigate} from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from "@apollo/client";
+import { WalletsQuery } from "../../graphql/query/wallets";
+import { FlowsQuery } from "../../graphql/query/flows";
+import { LoginMutation } from "../../graphql/mutation/login";
+import { CreateRegistrationMutation } from "../../graphql/mutation/create_registration";
+import { SetEmailMutation } from "../../graphql/mutation/set_email";
+import { ConfirmEmailMutation } from "../../graphql/mutation/confirm_email";
+import { SetCredentialsMutation } from "../../graphql/mutation/set_registration_credentials";
+import { useNavigate } from "react-router-dom";
 
 const registrationIDName = "registration-id"
 
@@ -19,14 +19,19 @@ type Flow = {
 const RegistrationWorkflow = () => {
     const navigate = useNavigate();
 
-    const [registrationID, setRegistrationID] = useState<string|null>("")
+    const [registrationID, setRegistrationID] = useState<string | null>("")
     const [flow, setFlow] = useState<Flow | null>(null);
-    const [err, setErr] = useState("");
+    const [errors, setErrors] = useState<string[]>([]); // State for errors
 
     const [email, setEmail] = useState('');
     const [code, setCode] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const [emailLoading, setEmailLoading] = useState(false);
+    const [codeLoading, setCodeLoading] = useState(false);
+    const [credentialsLoading, setCredentialsLoading] = useState(false);
 
     const { loading, error, data } = useQuery(FlowsQuery, {
         variables: {
@@ -46,56 +51,64 @@ const RegistrationWorkflow = () => {
 
     const handleEmailSubmit = async () => {
         try {
+            setEmailLoading(true);
             const response = await setEmailMutation({
-                    variables: {
-                        input: {
-                            id: registrationID,
-                            email: email,
-                        }
-                    },
-                }
-            );
-        } catch (error) {
+                variables: {
+                    input: {
+                        id: registrationID,
+                        email: email,
+                    }
+                },
+            });
+            setEmailLoading(false);
+            setErrors([]); // Clear errors on successful submission
+        } catch (error: any) {
             console.error("Error during login:", error);
-            setErr("An error occurred during login. Please try again later.");
+            setErrors([error.message]);
+            setEmailLoading(false);
             return ""
         }
     };
 
     const handleCodeSubmit = async () => {
         try {
+            setCodeLoading(true);
             const response = await confirmEmailMutation({
-                    variables: {
-                        input: {
-                            id: registrationID,
-                            code: code,
-                        }
-                    },
-                }
-            );
-        } catch (error) {
+                variables: {
+                    input: {
+                        id: registrationID,
+                        code: code,
+                    }
+                },
+            });
+            setCodeLoading(false);
+            setErrors([]); // Clear errors on successful submission
+        } catch (error: any) {
             console.error("Error during login:", error);
-            setErr("An error occurred during login. Please try again later.");
+            setErrors([error.message]);
+            setCodeLoading(false);
             return ""
         }
     };
 
     const handleCredentialsSubmit = async () => {
         try {
+            setCredentialsLoading(true);
             const response = await setCredentialsMutation({
-                    variables: {
-                        input: {
-                            id: registrationID,
-                            username: username,
-                            password: password,
-                        }
-                    },
-                }
-            );
-
-        } catch (error) {
+                variables: {
+                    input: {
+                        id: registrationID,
+                        username: username,
+                        password: password,
+                    }
+                },
+            });
+            setCredentialsLoading(false);
+            setErrors([]); // Clear errors on successful submission
+        } catch (error: any) {
             console.error("Error during login:", error);
-            setErr("An error occurred during login. Please try again later.");
+            setErrors([error.message]);
+            setCredentialsLoading(false);
             return ""
         }
     };
@@ -108,15 +121,15 @@ const RegistrationWorkflow = () => {
             return
         }
 
-        createRegistration().then(() => {})
+        createRegistration().then(() => { })
 
     }, [])
 
 
     useEffect(() => {
-       if (data) {
-           setFlow(data.flows.items[0])
-       }
+        if (data) {
+            setFlow(data.flows.items[0])
+        }
 
         if (flow?.state === "COMPLETED") {
             navigate("/overview");
@@ -126,19 +139,21 @@ const RegistrationWorkflow = () => {
     const createRegistration = async (): Promise<string> => {
         try {
             const response = await createRegistrationMutation({
-                variables: {},
-            }
+                    variables: {},
+                }
             );
             let id = response.data.registrationMutations.createRegistration.id
             setRegistrationID(id)
             localStorage.setItem(registrationIDName, id)
             return id
-        } catch (error) {
+        } catch (error: any) {
             console.error("Error during login:", error);
-            setErr("An error occurred during login. Please try again later.");
+            setErrors([error.message]);
             return ""
         }
     };
+
+    const passwordsMatch = password === confirmPassword;
 
     return (
         <div className="mt-6 md:mt-12 p-4  max-w-md w-full">
@@ -160,9 +175,13 @@ const RegistrationWorkflow = () => {
                     <button
                         className="bg-base font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleEmailSubmit}
+                        disabled={emailLoading}
                     >
-                        Next
+                        {emailLoading ? 'Loading...' : 'Next'}
                     </button>
+                    {errors.map((error, index) => (
+                        <p key={index} className="text-red-500 mt-2">{error}</p>
+                    ))}
                 </div>
             )}
             {flow?.state === "WAITING_EMAIL_CONFIRMATION" && (
@@ -180,9 +199,13 @@ const RegistrationWorkflow = () => {
                     <button
                         className="bg-base font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleCodeSubmit}
+                        disabled={codeLoading}
                     >
-                        Next
+                        {codeLoading ? 'Loading...' : 'Next'}
                     </button>
+                    {errors.map((error, index) => (
+                        <p key={index} className="text-red-500 mt-2">{error}</p>
+                    ))}
                 </div>
             )}
             {flow?.state === "WAITING_CREDENTIALS" && (
@@ -207,12 +230,31 @@ const RegistrationWorkflow = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
+                    <label className="block text-gray-700 text-sm font-bold mb-2 text-start" htmlFor="confirmPassword">
+                        Confirm Password
+                    </label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        className={`mb-4 appearance-none border rounded w-full py-3 px-3 text-gray-700 focus:outline-none focus:shadow-outline ${
+                            !passwordsMatch && 'border-red-500'
+                        }`}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
                     <button
                         className="bg-base font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         onClick={handleCredentialsSubmit}
+                        disabled={credentialsLoading || !passwordsMatch}
                     >
-                        Sign Up
+                        {credentialsLoading ? 'Loading...' : 'Sign Up'}
                     </button>
+                    {!passwordsMatch && (
+                        <p className="text-red-500 mt-2">Passwords do not match</p>
+                    )}
+                    {errors.map((error, index) => (
+                        <p key={index} className="text-red-500 mt-2">{error}</p>
+                    ))}
                 </div>
             )}
         </div>
