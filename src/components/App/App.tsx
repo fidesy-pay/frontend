@@ -3,15 +3,11 @@ import {ApolloProvider} from "@apollo/client";
 import client from "../../services/apollo_client";
 import Login from "../Login/Login";
 import SignUp from "../SignUp/SignUp";
-import Overview from "../Profile/Overview";
 import Invoice from "../Invoice/Invoice";
 import Profile from "../Profile/Profile";
-import Header from "../Header/Header";
 import Error from "../../Error/Error";
 import Transfer from "../Transfer/Transfer";
-import {useState} from "react";
-import user_photo from "../../assets/user.png";
-
+import Overview from "../Overview/Overview";
 
 
 const router = createBrowserRouter([
@@ -42,18 +38,15 @@ const router = createBrowserRouter([
         path: "/transfer",
         element: <Transfer/>
     }
-
 ])
+
 export default function App() {
     return (
         <main>
-
             <ApolloProvider client={client}>
-                <div className="md:p-8 rounded-lg flex flex-col items-center">
-                    <Header />
+                <div>
                     <RouterProvider router={router}/>
                 </div>
-
             </ApolloProvider>
 
         </main>

@@ -15,7 +15,7 @@ export function MainBalance() {
     }
 
     return (
-        <div className="mt-8 w-full max-w-md">
+        <div className="mt-32 w-full max-w-md">
             <div className="flex flex-col items-center">
                 <div>
                     <span className="text-sm">

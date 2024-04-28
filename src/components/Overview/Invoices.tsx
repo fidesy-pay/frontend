@@ -69,7 +69,7 @@ function Invoice({ invoice }: { invoice: InvoiceModel }) {
     return (
         <a className="md:mt-3 flex items-center cursor-pointer" href={"http://pay.fidesy.tech/invoices/"+invoice.id}>
             <div>
-                <img src={invoice.payer && invoice.payer.photo_url !== "" ? invoice.payer.photo_url : user_photo} alt="User Photo" className="h-10 w-10 md:h-16 md:w-16 rounded-lg" />
+                <img src={invoice.payer && invoice.payer.photo_url !== null ? invoice.payer.photo_url : user_photo} alt="User Photo" className="h-10 w-10 md:h-16 md:w-16 rounded-lg" />
             </div>
             <div className="flex-grow flex flex-col px-6 py-4">
                 <div className="font-bold md:text-lg">{invoice.payer ? invoice.payer.username : 'Anonymous'}</div>

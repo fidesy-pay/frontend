@@ -6,6 +6,7 @@ import {formatDate} from '../../utils/format_date';
 import {arbitrumLogoUrl, polygonMaticLogoUrl} from "../../constants/constants";
 import { InvoiceModel } from "../../types/invoice";
 import {UpdateInvoiceMutation} from "../../graphql/mutation/update_invoice";
+import Header from "../Header/Header";
 
 type PaymentOption = {
     name: string
@@ -81,8 +82,9 @@ export const Invoice: React.FC = () => {
         return <p className="text-center mt-4">Invoice not found</p>;
     }
     return (
-        <div className="mt-10 w-full flex justify-center">
-            <div className=" rounded-lg">
+        <section>
+            <Header/>
+            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
                 <h1 className="text-2xl font-semibold mb-6 text-center">Invoice Details</h1>
                 <div key={invoice.id} className="mb-6 rounded-lg shadow-lg">
                     <div className="p-4">
@@ -148,8 +150,7 @@ export const Invoice: React.FC = () => {
                     </div>
                 }
             </div>
-        </div>
-
+        </section>
     )
 
 };
