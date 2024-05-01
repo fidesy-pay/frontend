@@ -1,7 +1,6 @@
 import {
   createBrowserRouter,
   RouterProvider,
-  ScrollRestoration,
 } from "react-router-dom";
 import { ApolloProvider } from "@apollo/client";
 import client from "../../services/apollo_client";
@@ -9,10 +8,11 @@ import Login from "../Login/Login";
 import SignUp from "../SignUp/SignUp";
 import Invoice from "../Invoice/Invoice";
 import Profile from "../Profile/Profile";
-import Error from "../../Error/Error";
+import Error from "../Error/Error";
 import Transfer from "../Transfer/Transfer";
 import Overview from "../Overview/Overview";
 import Home from "../Home/Home";
+import RestorePassword from "../RestorePassword/RestorePassword";
 
 const router = createBrowserRouter([
   {
@@ -45,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/transfer",
     element: <Transfer />,
+  },
+  {
+    path: "/restore-password",
+    element: <RestorePassword />,
   },
 ]);
 
