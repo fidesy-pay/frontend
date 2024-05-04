@@ -1,20 +1,18 @@
 import { Wallets } from "./Wallets";
-import {MainBalance} from "./MainBalance";
+import { MainBalance } from "./MainBalance";
 import Invoices from "./Invoices";
 import Actions from "./Actions";
-import user_photo from "../../assets/user.png";
 import Header from "../Header/Header";
 
-
 export default function Overview() {
-    return (
-        <div className="p-6 w-full flex flex-col items-center">
-            <Header/>
+  return (
+    <div className="p-6 w-full flex flex-col items-center">
+      <Header />
 
-            <MainBalance/>
-            <Actions/>
-            <Wallets/>
-            <Invoices/>
-        </div>
-    )
+      <MainBalance />
+      <Actions />
+      <Wallets />
+      <Invoices />
+    </div>
+  );
 }

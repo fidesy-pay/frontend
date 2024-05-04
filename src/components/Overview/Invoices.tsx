@@ -26,10 +26,12 @@ export default function Invoices() {
   if (loading) return <p className="text-center mt-4"></p>;
 
   if (error) {
-    if (error.networkError?.message.includes("401")) {
+    if (
+      error.networkError?.message.includes("401") ||
+      error.toString().includes("NO_AUTH")
+    ) {
       return <div></div>;
     }
-
     return <p className="text-center text-red-500 mt-4">Error :(</p>;
   }
 

@@ -7,7 +7,10 @@ export function MainBalance() {
   });
 
   if (error) {
-    if (error.networkError?.message.includes("401")) {
+    if (
+      error.networkError?.message.includes("401") ||
+      error.toString().includes("NO_AUTH")
+    ) {
       return <div></div>;
     }
 

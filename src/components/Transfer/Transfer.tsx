@@ -73,8 +73,18 @@ const Transfer: React.FC = () => {
       },
     },
   );
-
   const [transfer] = useMutation(TransferMutation);
+
+  if (feeError) {
+    if (
+      feeError.networkError?.message.includes("401") ||
+      feeError.toString().includes("NO_AUTH")
+    ) {
+      return <div></div>;
+    }
+
+    return <p className="text-center text-red-500 mt-4">Error :(</p>;
+  }
 
   const handleGasLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = parseInt(event.target.value);

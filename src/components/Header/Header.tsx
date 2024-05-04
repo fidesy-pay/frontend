@@ -19,7 +19,7 @@ export default function Header() {
                   ? data.me.photo_url
                   : user_photo
               }
-              alt="User Photo"
+              alt="User"
               className="h-12 w-12 rounded-lg"
             />
           )}

@@ -21,10 +21,12 @@ export function Balance(input: {
   }
 
   if (error) {
-    if (error.networkError?.message.includes("401")) {
+    if (
+      error.networkError?.message.includes("401") ||
+      error.toString().includes("NO_AUTH")
+    ) {
       return <div></div>;
     }
-
     return <p className="text-center text-red-500 mt-4">Error :(</p>;
   }
 
