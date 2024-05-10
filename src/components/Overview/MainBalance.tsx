@@ -14,7 +14,7 @@ export function MainBalance() {
       return <div></div>;
     }
 
-    return <p className="text-center text-red-500 mt-4">Error :(</p>;
+    return <p className="mt-32 text-center text-red-500 ">Error :(</p>;
   }
 
   return (
