@@ -7,8 +7,9 @@ import {
 } from "../../constants/constants";
 import React from "react";
 
-type Wallet = {
+export type Wallet = {
   address: string;
+  chain: string;
 };
 
 export function Wallets() {

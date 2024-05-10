@@ -1,7 +1,14 @@
-export default function Error() {
+import error_photo from "../../assets/error.png";
+
+type ErrorProps = {
+  message: string
+}
+
+export const Error = ({ message }: ErrorProps) => {
   return (
-    <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
-      <h1 className="text-xl">Page not found</h1>
+    <div className="mt-4 p-4 rounded-xl  bg-red-200 flex items-center">
+      <img src={error_photo} width="32" alt="error"/>
+      <span className="mx-2">{ message }</span>
     </div>
-  );
+  )
 }

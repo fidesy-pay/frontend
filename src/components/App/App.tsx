@@ -8,11 +8,12 @@ import Login from "../Login/Login";
 import SignUp from "../SignUp/SignUp";
 import Invoice from "../Invoice/Invoice";
 import Profile from "../Profile/Profile";
-import Error from "../Error/Error";
+import Error from "../NotFound/NotFound";
 import Transfer from "../Transfer/Transfer";
 import Overview from "../Overview/Overview";
 import Home from "../Home/Home";
 import RestorePassword from "../RestorePassword/RestorePassword";
+import NotFound from "../NotFound/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +41,7 @@ const router = createBrowserRouter([
     element: <Invoice />,
   },
   {
-    errorElement: <Error />,
+    errorElement: <NotFound />,
   },
   {
     path: "/transfer",

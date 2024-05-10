@@ -14,6 +14,10 @@ import { formatDateV2 } from "../../utils/format_date";
 import Client from "../Client/Client";
 import { directive } from "@babel/types";
 import Header from "../Header/Header";
+import { Balance } from "../Balance/Balance";
+import { WalletsQuery } from "../../graphql/query/wallets";
+import { Wallet } from "../Overview/Wallets";
+import { Error } from "../Error/Error"
 
 type Fee = {
   usd_amount: number;
@@ -58,6 +62,11 @@ const Transfer: React.FC = () => {
     },
   });
 
+  const { data: walletsResp } = useQuery(WalletsQuery, {
+    variables: {},
+  });
+
+
   const { loading: clientsLoading, error: clientsError } = useQuery(
     ClientsQuery,
     {
@@ -83,7 +92,7 @@ const Transfer: React.FC = () => {
       return <div></div>;
     }
 
-    return <p className="text-center text-red-500 mt-4">Error :(</p>;
+    // return <p className="text-center text-red-500 mt-4">Error :(</p>;
   }
 
   const handleGasLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,6 +103,20 @@ const Transfer: React.FC = () => {
 
     setGasLimit(value);
   };
+
+  const handleTransferError = (errorMessage: string) => {
+    if (errorMessage.includes("maxFeePerGas")) {
+      setTransferError("Increase transfer fee")
+      return
+    }
+
+    if (errorMessage.includes("insufficient funds")) {
+      setTransferError("Not enough funds to transfer")
+      return
+    }
+
+    setTransferError(errorMessage)
+  }
 
   const handleTransfer = async () => {
     try {
@@ -130,15 +153,15 @@ const Transfer: React.FC = () => {
       }
     } catch (error: any) {
       console.error("Error transferring:", error);
-      setTransferError(error.toString());
+      handleTransferError(error.toString())
     }
   };
 
   return (
     <div>
       <Header />
-      <div className="mt-24 flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
-        <div className="mt-12 max-w-md w-full px-3 md:p-0">
+      <div className="mt-12 flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
+        <div className="max-w-md w-full px-3 md:p-0">
           <h2 className="text-lg font-semibold">Transfer</h2>
 
           <div className="mt-2 md:mt-6 ring-2 ring-gray-100 custom-shadow py-9 px-6 rounded-3xl">
@@ -222,23 +245,41 @@ const Transfer: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2 text-start"
-                htmlFor="amount"
-              >
-                Amount
-              </label>
-              <input
-                type="number"
-                id="amount"
-                value={transferAmount}
-                onChange={(e) => setTransferAmount(e.target.value)}
-                className="border border-gray-300 rounded-md p-2 w-full"
-              />
+
+            <div>
+              <div className="mb-4">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2 text-start"
+                  htmlFor="amount"
+                >
+                  Amount
+                </label>
+                <input
+                  type="number"
+                  id="amount"
+                  value={transferAmount}
+                  onChange={(e) => setTransferAmount(e.target.value)}
+                  className="border border-gray-300 rounded-md p-2 w-full"
+                />
+              </div>
+
             </div>
 
-            <div className="mb-4">
+            <div className="flex flex-start items-center">
+              <div>
+                <span className="text-sm font-semibold">Balance:</span>
+              </div>
+              <div className="mx-2">
+                {walletsResp !== undefined && <Balance 
+                  address={walletsResp.wallets.items.filter((wallet: Wallet) => wallet.chain===selectedChain.chain)[0].address} 
+                  chain={selectedChain.chain} 
+                  token={selectedChain.token}
+                  />}
+              </div>
+            </div>
+
+          
+            <div className="mt-4 mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2 text-start"
                 htmlFor="gas_limit"
@@ -333,7 +374,7 @@ const Transfer: React.FC = () => {
               </p>
             )}
             {transferError && (
-              <p className="mt-5 text-center text-gray-600">{transferError}</p>
+              <Error message={transferError}/>
             )}
           </div>
         </div>
