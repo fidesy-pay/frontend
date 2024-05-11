@@ -160,7 +160,8 @@ const Transfer: React.FC = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
+      <div className="mt-12 flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
+
         <div className="max-w-md w-full px-3 md:p-0">
           <h2 className="text-lg font-semibold">Transfer</h2>
 

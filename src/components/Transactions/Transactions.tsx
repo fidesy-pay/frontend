@@ -57,7 +57,7 @@ export const Transactions = () => {
     <div className="mt-6">
         <h2 className="md:text-lg font-semibold mb-4 p-4">Transactions</h2>
         <div className="custom-shadow p-3 rounded-3xl">
-          {data && data.transactions.items.map((tx: TransactionModel) => {
+          {data && data.transactions.items != null && data.transactions.items.map((tx: TransactionModel) => {
             return <Transaction tx={tx}/>
           })}
         </div>
@@ -67,13 +67,11 @@ export const Transactions = () => {
 
 const Transaction = ({tx}: {tx: TransactionModel}) => {
   return (
-    <div className="p-7 flex items-center">
+    <div className="mt-3 p-4">
       {tx.is_client_sender 
-       ? <Client photo_url={tx.receiver.photo_url} username={tx.receiver.username} address={tx.to_address} created_at={tx.created_at} chain={tx.chain} amount={"-"+tx.amount.toFixed(6).toString()} hash={tx.hash}/> 
-       : <Client photo_url={tx.sender.photo_url} username={tx.sender.username} address={tx.from_address} created_at={tx.created_at} chain={tx.chain} amount={"+"+tx.amount.toFixed(6).toString()} hash={tx.hash}/> 
-       }
-      
-    
+       ? <Client photo_url={tx.receiver.photo_url} username={tx.receiver.username} address={tx.to_address} created_at={tx.created_at} chain={tx.chain} amount={"-"+tx.amount.toString().slice(0, 8)} hash={tx.hash}/> 
+       : <Client photo_url={tx.sender.photo_url} username={tx.sender.username} address={tx.from_address} created_at={tx.created_at} chain={tx.chain} amount={"+"+tx.amount.toString().slice(0, 8)} hash={tx.hash}/> 
+       }    
     </div>
   )
 }
@@ -92,35 +90,35 @@ const Client = ({ photo_url, username, address, created_at, chain, amount, hash 
 
   let logo = chain === "arbitrum" ? ethereumLogoUrl : polygonMaticLogoUrl
 
-  let scanLink = chain === "arbitrum" ? "https://sepolia.arbiscan.io/tx/" : "https://polygonscan.com/tx/"
+  let scanLink = chain === "arbitrum" ? "https://sepolia.arbiscan.io/tx/" : "https://www.oklink.com/amoy/tx/"
   scanLink += hash
 
   return (
-    <a className="flex items-center cursor-pointer" href={scanLink}>
-      <div>
-        <img
-            src={
-              photo_url !== null
-                ? photo_url
-                : user_photo
-            }
-            alt="User"
-            className="h-10 w-10 md:h-16 md:w-16 rounded-lg"
-          />
+    <a
+    className="flex items-center cursor-pointer"
+    href={scanLink}
+    >
+    <div>
+      <img
+        src={photo_url !== null ? photo_url : user_photo}
+        alt="User"
+        className="h-10 w-10 md:h-16 md:w-16 rounded-lg"
+      />
+    </div>
+    <div className="flex-grow flex flex-col px-4 md:px-8">
+      <div className="font-bold md:text-lg">
+        {username ? username : address.slice(0, 8) + "..."}
       </div>
-      <div className="flex-grow flex flex-col px-6 py-4">
-        <div className="font-bold md:text-lg">
-          {username ? username : address.slice(0, 8) + "..."}
-        </div>
-        <p className="text-gray-600 text-xs">
-          {formatDateV2(created_at)}
-        </p>
-      </div>
+      <p className="text-gray-600 text-xs">
+        {formatDateV2(created_at)}
+      </p>
+    </div>
 
-      <div className="flex items-center">
-        <span className="font-bold text-xl">{amount}</span>
-        <span><img src={logo} alt="token" width="22"/></span>
+    <div className="flex items-center">
+        <span className="font-bold text-sm md:text-xl mr-2">{amount}</span>
+        <span><img src={logo} alt="token" className="h-6 w-6 md:h-10 md:w-10 rounded-lg"/></span>
       </div>
     </a>
   )
 }
+
