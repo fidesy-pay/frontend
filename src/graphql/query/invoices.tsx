@@ -1,7 +1,7 @@
 import {gql} from "@apollo/client";
 export const InvoicesQuery = gql`
-    query Invoices($filter: InvoicesFilter) {
-        invoices(filter: $filter) {
+    query Invoices($filter: InvoicesFilter, $page: Int!, $perPage: Int!) {
+        invoices(filter: $filter, page: $page, per_page: $perPage) {
             items {
                 id
                 usd_amount

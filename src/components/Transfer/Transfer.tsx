@@ -105,7 +105,7 @@ const Transfer: React.FC = () => {
   };
 
   const handleTransferError = (errorMessage: string) => {
-    if (errorMessage.includes("maxFeePerGas")) {
+    if (errorMessage.includes("maxFeePerGas") || errorMessage.includes("intrinsic gas too low")) {
       setTransferError("Increase transfer fee")
       return
     }

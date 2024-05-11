@@ -1,19 +1,23 @@
 import React, { useEffect, useState } from "react";
 import user_photo from "../../assets/user.png";
+
 import { formatDateV2 } from "../../utils/format_date";
 import { useQuery } from "@apollo/client";
 import { InvoicesQuery } from "../../graphql/query/invoices";
 import { InvoiceModel } from "../../types/invoice";
 import invoice from "../Invoice/Invoice";
+import { SpinRefetcher } from "../SpinRefetcher/SpinRefetcher";
 
 export default function Invoices() {
   const [invoiceStatus, setInvoiceStatus] = useState<string>("SUCCESS");
 
   const [invoices, setInvoices] = useState<InvoiceModel[]>([]);
 
-  const { loading, error, data } = useQuery(InvoicesQuery, {
+  const { loading, error, data, refetch } = useQuery(InvoicesQuery, {
     variables: {
       filter: {},
+      page: 1,
+      perPage: 10,
     },
   });
 
@@ -23,7 +27,7 @@ export default function Invoices() {
     }
   }, [data]);
 
-  if (loading) return <p className="text-center mt-4"></p>;
+  if (loading) return <p className="text-center mt-4">Loading...</p>;
 
   if (error) {
     if (
@@ -35,11 +39,15 @@ export default function Invoices() {
     return <p className="text-center text-red-500 mt-4">Error :(</p>;
   }
 
+
   return (
     <div className="mt-12 max-w-md w-full">
       <div className="flex justify-between items-center space-x-3">
-        <h1 className="md:text-lg font-semibold mb-4">Invoices</h1>
-
+        <div className="flex flex-row items-center">
+          <h1 className="md:text-lg font-semibold mx-2">Invoices</h1>
+          <SpinRefetcher refetchFunc={refetch}/>
+        </div>
+      
         <select
           className="text-sm md:text-lg mb-4 font-semibold p-4 rounded-2xl cursor-pointer ring-2 ring-gray-200"
           value={invoiceStatus}
@@ -55,7 +63,7 @@ export default function Invoices() {
       <div className="mt-5 p-5 px-8 rounded-2xl ring-2 ring-gray-100 custom-shadow ">
         {invoices &&
           invoices.map((invoice: InvoiceModel) => {
-            if (invoice.status != invoiceStatus) {
+            if (invoice.status !== invoiceStatus) {
               return;
             }
 
@@ -79,7 +87,7 @@ function Invoice({ invoice }: { invoice: InvoiceModel }) {
               ? invoice.payer.photo_url
               : user_photo
           }
-          alt="User Photo"
+          alt="User"
           className="h-10 w-10 md:h-16 md:w-16 rounded-lg"
         />
       </div>

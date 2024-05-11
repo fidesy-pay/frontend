@@ -3,6 +3,7 @@ import { MainBalance } from "./MainBalance";
 import Invoices from "./Invoices";
 import Actions from "./Actions";
 import Header from "../Header/Header";
+import { Transactions } from "../Transactions/Transactions";
 
 export default function Overview() {
   return (
@@ -13,6 +14,7 @@ export default function Overview() {
       <Actions />
       <Wallets />
       <Invoices />
+      <Transactions/>
     </div>
   );
 }
