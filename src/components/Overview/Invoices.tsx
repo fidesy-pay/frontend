@@ -15,7 +15,9 @@ export default function Invoices() {
 
   const { loading, error, data, refetch } = useQuery(InvoicesQuery, {
     variables: {
-      filter: {},
+      filter: {
+        statusIn: [invoiceStatus],
+      },
       page: 1,
       perPage: 10,
     },

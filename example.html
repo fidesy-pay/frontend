@@ -16,7 +16,7 @@
         <img src="https://via.placeholder.com/400x300" alt="Product Image" class="rounded-lg shadow-md">
     </div>
     <p class="text-lg">Product Name: Example Product</p>
-    <p class="text-lg">Price: $0.5</p>
+    <p class="text-lg">Price: $0.01</p>
 
     <button onclick="buyProduct()" id="buyButton" class="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Buy Now</button>
     <p id="paymentStatus" class="hidden mt-4 text-lg font-bold text-green-600">Payment Confirmed!</p>
@@ -30,10 +30,10 @@
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'api-key': '45e6ca57d5188b7e181df8b36d7e367a'
+                'api-key': 'd6a25d33e3bbeb8e07ed99e521810efa'
             },
             body: JSON.stringify({
-                usd_amount: 0.1
+                usd_amount: 0.01
             })
         })
             .then(response => response.json())
@@ -61,7 +61,7 @@
     function checkInvoiceStatus(invoiceId) {
         fetch(`http://facade.pay.fidesy.tech/api/invoice/${invoiceId}`, {
             headers: {
-                'api-key': '45e6ca57d5188b7e181df8b36d7e367a'
+                'api-key': 'd6a25d33e3bbeb8e07ed99e521810efa'
             }
         })
             .then(response => response.json())
