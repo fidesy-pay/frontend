@@ -1,11 +1,9 @@
 import { gql } from "@apollo/client";
 
 export const SendCodeMutation = gql`
-    mutation SendCode($input: SendCodeInput!) {
-        emailMutations {
-            sendCode(input: $input) {
-                id
-            }
+    mutation SendCode($input: SendEmailOtpInput!) {
+        sendEmailOtp(input: $input) {
+                email_code_id
         }
     }
 `;

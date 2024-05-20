@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useMutation, useQuery } from "@apollo/client";
 import { FlowsQuery } from "../../graphql/query/flows";
 import { LoginMutation } from "../../graphql/mutation/login";
-import { SetEmailMutation } from "../../graphql/mutation/set_email";
 import { ConfirmEmailMutation } from "../../graphql/mutation/confirm_email";
-import { SetCredentialsMutation } from "../../graphql/mutation/set_registration_credentials";
 import { useNavigate } from "react-router-dom";
 import {
     CreateRestorePasswordMutation,
