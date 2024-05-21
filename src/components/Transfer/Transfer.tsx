@@ -3,10 +3,11 @@ import { useQuery, useMutation } from "@apollo/client";
 import { TransferMutation } from "../../graphql/mutation/transfer";
 import { FeeQuery } from "../../graphql/query/fee";
 import { ClientsQuery } from "../../graphql/query/clients"; // Import the ClientsQuery
-import { ArbitrumEthereum, PolygonMatic } from "../Invoice/Invoice";
+import { ArbitrumEthereum, OptimismEthereum, PolygonMatic } from "../Invoice/Invoice";
 import {
   arbitrumLogoUrl,
   ethereumLogoUrl,
+  optimismLogoUrl,
   polygonMaticLogoUrl,
 } from "../../constants/constants";
 import user_photo from "../../assets/user.png";
@@ -188,7 +189,7 @@ const Transfer: React.FC = () => {
               <div
                 className={
                   "px-4 py-2 " +
-                  (selectedChain.symbol === "ETH" ? "" : "opacity-25")
+                  (selectedChain.chain === "arbitrum" ? "" : "opacity-25")
                 }
               >
                 <div
@@ -203,6 +204,25 @@ const Transfer: React.FC = () => {
                   <span className="text-sm">Arbitrum Ethereum</span>
                 </div>
               </div>
+              <div
+                className={
+                  "px-4 py-2 " +
+                  (selectedChain.chain === "optimism" ? "" : "opacity-25")
+                }
+              >
+                <div
+                  className="flex items-center space-x-2 text-gray-700"
+                  onClick={() => setSelectedChain(OptimismEthereum)}
+                >
+                  <img
+                    src={optimismLogoUrl}
+                    alt="Optimism ETH Logo"
+                    className="h-8 w-8"
+                  />
+                  <span className="text-sm">Optimism ETH</span>
+                </div>
+              </div>
+              
             </div>
 
             <div className="mt-6 mb-4">

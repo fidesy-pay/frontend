@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client"
 import { TransactionsQuery } from "../../graphql/query/transactions"
 import user_photo from "../../assets/user.png";
 import { formatDate, formatDateV2 } from "../../utils/format_date";
-import { ethereumLogoUrl, polygonMaticLogoUrl } from "../../constants/constants";
+import { ethereumLogoUrl, optimismLogoUrl, polygonMaticLogoUrl } from "../../constants/constants";
 
 
 
@@ -88,9 +88,24 @@ type ClientProps = {
 
 const Client = ({ photo_url, username, address, created_at, chain, amount, hash }: ClientProps) => {
 
-  let logo = chain === "arbitrum" ? ethereumLogoUrl : polygonMaticLogoUrl
+  let logo
+  let scanLink
 
-  let scanLink = chain === "arbitrum" ? "https://sepolia.arbiscan.io/tx/" : "https://www.oklink.com/amoy/tx/"
+  switch (chain) {
+    case "arbitrum":
+      logo = ethereumLogoUrl
+      scanLink = "https://sepolia.arbiscan.io/tx/"
+      break
+    case "optimism":
+      logo = optimismLogoUrl
+      scanLink = "https://sepolia-optimism.etherscan.io/tx/"
+      break
+    case "polygon":
+      logo = polygonMaticLogoUrl
+      scanLink = "https://www.oklink.com/amoy/tx/"
+      break
+  }
+
   scanLink += hash
 
   return (

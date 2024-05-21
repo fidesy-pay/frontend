@@ -5,6 +5,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { formatDate } from "../../utils/format_date";
 import {
   arbitrumLogoUrl,
+  optimismLogoUrl,
   polygonMaticLogoUrl,
 } from "../../constants/constants";
 import { InvoiceModel } from "../../types/invoice";
@@ -34,6 +35,14 @@ export const ArbitrumEthereum: PaymentOption = {
   token: "ethereum",
   symbol: "ETH",
   image: arbitrumLogoUrl,
+};
+
+export const OptimismEthereum: PaymentOption = {
+  name: "Optimism Ethereum",
+  chain: "optimism",
+  token: "ethereum",
+  symbol: "ETH",
+  image: optimismLogoUrl,
 };
 
 export const Invoice: React.FC = () => {
@@ -185,6 +194,19 @@ export const Invoice: React.FC = () => {
                   className="h-8 w-8"
                 />
                 <span className="text-sm">Arbitrum Ethereum</span>
+              </div>
+            </div>
+            <div className="px-4 py-2">
+              <div
+                className="flex items-center space-x-2 text-gray-700"
+                onClick={() => setSelectedPaymentOption(OptimismEthereum)}
+              >
+                <img
+                  src={optimismLogoUrl}
+                  alt="Optimism Ethereum Logo"
+                  className="h-8 w-8"
+                />
+                <span className="text-sm">Optimism ETH</span>
               </div>
             </div>
 

@@ -3,6 +3,7 @@ import { WalletsQuery } from "../../graphql/query/wallets";
 import { Balance } from "./Balance";
 import {
   ethereumLogoUrl,
+  optimismLogoUrl,
   polygonMaticLogoUrl,
 } from "../../constants/constants";
 import React from "react";
@@ -82,7 +83,7 @@ function Wallet(input: { wallet: Wallet }) {
               {" "}
               <img
                 src={ethereumLogoUrl}
-                alt="Polygon Matic Logo"
+                alt="Arbitrum Ethereum Logo"
                 className="h-9 w-9 md:h-12 md:w-12"
               />
             </span>
@@ -99,6 +100,33 @@ function Wallet(input: { wallet: Wallet }) {
             <Balance
               address={input.wallet.address}
               chain={"arbitrum"}
+              token={"ethereum"}
+            />
+          </div>
+        </div>
+        <div className="mt-5 flex items-center text-gray-700">
+          <div>
+            <span>
+              {" "}
+              <img
+                src={optimismLogoUrl}
+                alt="Optimism Ethereum Logo"
+                className="h-9 w-9 md:h-12 md:w-12"
+              />
+            </span>
+          </div>
+          <div className="flex-grow mx-3">
+            <div>
+              <span className="font-semibold md:text-xl">Ethereum</span>
+            </div>
+            <div>
+              <span className="text-sm text-gray">optimism</span>
+            </div>
+          </div>
+          <div className="">
+            <Balance
+              address={input.wallet.address}
+              chain={"optimism"}
               token={"ethereum"}
             />
           </div>
